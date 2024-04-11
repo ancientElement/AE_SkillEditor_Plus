@@ -7,18 +7,18 @@ namespace AE_SkillEditor_Plus.UI
     {
         public int TrackID;
 
-        public void UpdateUI(Rect rect, int headWidth,TrackStyleData data)
+        public void UpdateUI(ClipEditorWindow window,Rect rect, int headWidth,TrackStyleData data,int trackIndex)
         {
             //划分
             var headRect = new Rect(rect.x, rect.y, headWidth * data.WidthPreFrame,
                 rect.height);
-            TrackHeadStyle.UpdateUI(headRect, data);
+            TrackHeadStyle.UpdateUI(headRect, data,trackIndex);
             //划分
             var bodyRect = new Rect(rect.x + headWidth * data.WidthPreFrame,
                 rect.y,
                 rect.width - headWidth * data.WidthPreFrame,
                 rect.height);
-            TrackBodyStyle.UpdateUI(bodyRect, data);
+            TrackBodyStyle.UpdateUI(window,bodyRect, data,trackIndex);
         }
     }
 }

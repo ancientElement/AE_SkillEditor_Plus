@@ -7,7 +7,7 @@ namespace AE_SkillEditor_Plus.UI
     //轨道体
     public static class TrackBodyStyle
     {
-        public static void UpdateUI(Rect rect,TrackStyleData data)
+        public static void UpdateUI(ClipEditorWindow window,Rect rect,TrackStyleData data,int trackIndex)
         {
             //绘制背景
             GUI.backgroundColor = Color.gray;
@@ -22,7 +22,7 @@ namespace AE_SkillEditor_Plus.UI
                     rect.y,
                     (clipData.EndID - clipData.StartID) * data.WidthPreFrame,
                     rect.height);
-                TrackClipStyle.UpdateUI(clipRect,clipData);
+                TrackClipStyle.UpdateUI(window,clipRect,clipData,trackIndex,i);
             }
         }
     }

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using AE_SkillEditor_Plus.Event;
 using AE_SkillEditor_Plus.UI;
 using AE_SkillEditor_Plus.UI.Data;
 using UnityEditor;
 using UnityEngine;
+using EventType = AE_SkillEditor_Plus.Event.EventType;
+
 
 namespace AE_SkillEditor_Plus
 {
@@ -22,17 +25,26 @@ namespace AE_SkillEditor_Plus
 
         #endregion
 
+        #region Test
+
+        //测试数据
+        private List<TrackStyleData> trackStyleData;
+
+        #endregion
+
         private int TrackHeight = 50; //轨道高度
         private int WidthPreFrame = 1; //每帧多宽
         private int HeadWidth = 100; //轨道头部宽度
         private int IntervalHeight = 10; //轨道间隔
         private int ControllerHeight = 30; //控件高度
 
-        //更新UI
-        private void OnGUI()
+        //初始化
+        private void CreateGUI()
         {
+            EventCenter.AddEventListener(this, ProcessEvent);
+
             //测试数据
-            var trackDatas = new List<TrackStyleData>()
+            trackStyleData = new List<TrackStyleData>()
             {
                 new TrackStyleData()
                 {
@@ -74,19 +86,55 @@ namespace AE_SkillEditor_Plus
                     }
                 }
             };
-            
+        }
+
+        //销毁
+        private void OnDestroy()
+        {
+            EventCenter.RemoveEventListener(this, ProcessEvent);
+        }
+
+        //更新UI
+        private void OnGUI()
+        {
             //遍历轨道
             int height = 0;
             TrackControllerStyle.UpdateUI(new Rect(0, height, position.width, ControllerHeight));
             height += ControllerHeight;
-            foreach (var trackData in trackDatas)
+            for (var index = 0; index < trackStyleData.Count; index++)
             {
+                var trackData = trackStyleData[index];
                 var track = new TrackStyle();
                 //为轨道划分Rect
                 var rect = new Rect(0, height, position.width, TrackHeight);
-                track.UpdateUI(rect, HeadWidth,trackData);
-                height += TrackHeight+IntervalHeight;
+                track.UpdateUI(this, rect, HeadWidth, trackData, index);
+                height += TrackHeight + IntervalHeight;
             }
+        }
+
+        //处理事件
+        private void ProcessEvent(BaseEvent baseEvent)
+        {
+            switch (baseEvent.EventType)
+            {
+                //Clip移动事件
+                case EventType.Move:
+                {
+                    ClipMove((MoveEvent)baseEvent);
+                    break;
+                }
+            }
+        }
+
+        //Clip移动事件
+        private void ClipMove(MoveEvent move)
+        {
+            // Debug.Log(move.MouseStart + "--" + move.MouseCurrent + "--" + move.TrackIndex + "--" + move.ClipIndex);
+            trackStyleData[move.TrackIndex].Clips[move.ClipIndex].StartID +=
+                (int)move.MouseDeltaX/ WidthPreFrame;
+            trackStyleData[move.TrackIndex].Clips[move.ClipIndex].EndID +=
+                (int)move.MouseDeltaX / WidthPreFrame;
+            Repaint();
         }
     }
 }
