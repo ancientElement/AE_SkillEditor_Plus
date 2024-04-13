@@ -16,7 +16,7 @@ namespace AE_SkillEditor_Plus.UI
 
         private static bool moveEventMouseDown;
         private static bool resizeEventMouseDown;
-        private static BaseEvent mouseEvent;
+        private static ClipEvent mouseEvent;
         private static KeyboradEvent keyboradEvent;
         private static bool needClickClip;//是否需要点击Clip
 
@@ -38,7 +38,7 @@ namespace AE_SkillEditor_Plus.UI
                 UnityEngine.Event.current.button == 0)
             {
                 moveEventMouseDown = true;
-                mouseEvent = new MoveEvent()
+                mouseEvent = new ClipMoveEvent()
                 {
                     ClipIndex = clipIndex,
                     TrackIndex = trackIndex,
@@ -74,7 +74,7 @@ namespace AE_SkillEditor_Plus.UI
                 UnityEngine.Event.current.button == 0)
             {
                 resizeEventMouseDown = true;
-                mouseEvent = new ResizeEvent()
+                mouseEvent = new ClipResizeEvent()
                 {
                     ClipIndex = clipIndex,
                     TrackIndex = trackIndex,

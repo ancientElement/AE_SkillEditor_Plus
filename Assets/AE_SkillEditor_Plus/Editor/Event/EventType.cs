@@ -3,10 +3,13 @@
     //事件类型
     public enum EventType
     {
-        Move,
-        Resize,
-        RightClick,
-        Keyborad
+        ClipMove,
+        ClipResize,
+        ClipRightClick,
+        ClipKeyborad,
+        Controller,
+        TimelineScale,
+        TimelineDrag
     }
     
     //快捷键
@@ -15,5 +18,15 @@
         CtrlC,
         CtrlV,
         CtrlX
+    }
+    
+    //控件
+    public enum ControllerType 
+    {
+        Play,
+        ToPre,
+        ToNext,
+        ToMostBegin,
+        ToMostEnd,
     }
 }

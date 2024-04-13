@@ -29,7 +29,7 @@ namespace AE_SkillEditor_Plus
 
         #region Test
 
-        //TODO:测试数据
+        //TODO: 测试数据
         private List<TrackStyleData> trackStyleData;
 
         #endregion
@@ -39,18 +39,31 @@ namespace AE_SkillEditor_Plus
         private int HeadWidth = 250; //轨道头部宽度
         private int IntervalHeight = 10; //轨道间隔
         private int ControllerHeight = 30; //控件高度
+        private int currentFrameID;
+
+        private int CurrentFrameID
+        {
+            get { return currentFrameID; }
+            set
+            {
+                if (value < 0) return;
+                if (currentFrameID == value) return;
+                currentFrameID = value;
+                CurrentFrameIDChange();
+            }
+        } //当前帧
+
+        private object tempObject; //临时的一个变量 保存CtrlC的数据
 
         private int mouseCurrentFrameID //鼠标位置转化为FrameID
             => (int)((UnityEngine.Event.current.mousePosition.x - HeadWidth) / WidthPreFrame);
-
-        private object tempObject;
 
         //初始化
         private void OnEnable()
         {
             EventCenter.AddEventListener(this, ProcessEvent);
 
-            //TODO:测试数据
+            //TODO: 测试数据
             trackStyleData = new List<TrackStyleData>()
             {
                 new TrackStyleData()
@@ -104,13 +117,6 @@ namespace AE_SkillEditor_Plus
         //更新UI
         private void OnGUI()
         {
-            //划分控件 Timeline
-            var controllerRect = new Rect(0, 2.5f, HeadWidth-10f, ControllerHeight - 2.5f);
-            var timelineRect = new Rect(HeadWidth, 2.5f, position.width - HeadWidth, ControllerHeight - 2.5f);
-            //绘制控件和Timeline
-            Contorller.UpdateGUI(this,controllerRect);
-            TimeLine.UpdateGUI(this,WidthPreFrame,timelineRect);
-            
             //遍历轨道
             int height = 0;
             TrackControllerStyle.UpdateUI(new Rect(0, height, position.width, ControllerHeight));
@@ -125,7 +131,18 @@ namespace AE_SkillEditor_Plus
                 height += TrackHeight + IntervalHeight;
             }
 
-            Debug.Log(mouseCurrentFrameID);
+            //划分控件 Timeline
+            var controllerRect = new Rect(0, 2.5f, HeadWidth - 10f, ControllerHeight - 2.5f);
+            var timelineRect = new Rect(HeadWidth, 2.5f, position.width - HeadWidth, ControllerHeight - 2.5f);
+            //绘制控件和Timeline
+            Controller.UpdateGUI(this, controllerRect);
+            TimeLine.UpdateGUI(this, CurrentFrameID, WidthPreFrame, timelineRect);
+        }
+
+        //当前帧改变事件
+        private void CurrentFrameIDChange()
+        {
+            Repaint();
         }
 
         //处理事件
@@ -133,42 +150,77 @@ namespace AE_SkillEditor_Plus
         {
             switch (baseEvent.EventType)
             {
-                //Clip移动事件
-                case EventType.Move:
+                //Clip事件
+                case EventType.ClipMove:
                 {
-                    ClipMove((MoveEvent)baseEvent);
+                    ClipMove((ClipMoveEvent)baseEvent);
                     break;
                 }
-                case EventType.Resize:
+                case EventType.ClipResize:
                 {
-                    ClipResize((ResizeEvent)baseEvent);
+                    ClipResize((ClipResizeEvent)baseEvent);
                     break;
                 }
-                case EventType.Keyborad:
+                case EventType.ClipKeyborad:
                 {
                     ProcessKeyborad((KeyboradEvent)baseEvent);
+                    break;
+                }
+                //控件事件
+                case EventType.Controller:
+                {
+                    ProcessController((ControllerEvent)baseEvent);
+                    break;
+                }
+                //Timeline
+                case EventType.TimelineScale:
+                {
+                    ProcessTimelineScale((TimelineScaleEvent)baseEvent);
+                    break;
+                }
+                case EventType.TimelineDrag:
+                {
+                    ProcessTimelineDrag((TimelineDragEvent)baseEvent);
                     break;
                 }
             }
         }
 
-        //Clip大小改变
-        private void ClipResize(ResizeEvent resize)
+        //在时间轴上拖动
+        private void ProcessTimelineDrag(TimelineDragEvent dragEvent)
         {
-            trackStyleData[resize.TrackIndex].Clips[resize.ClipIndex].EndID =
-                (int)(mouseCurrentFrameID - (resize.OffsetMouseX / WidthPreFrame));
+            Debug.Log(dragEvent.EventType);
+        }
+
+        //时轴缩放
+        private void ProcessTimelineScale(TimelineScaleEvent scaleEvent)
+        {
+            Debug.Log(scaleEvent.EventType + "--" + scaleEvent.MouseScrollDelta);
+        }
+        
+        //控件事件
+        private void ProcessController(ControllerEvent controller)
+        {
+            Debug.Log(controller.ControllerType);
+        }
+
+        //Clip大小改变
+        private void ClipResize(ClipResizeEvent clipResize)
+        {
+            trackStyleData[clipResize.TrackIndex].Clips[clipResize.ClipIndex].EndID =
+                (int)(mouseCurrentFrameID - (clipResize.OffsetMouseX / WidthPreFrame));
             Repaint();
         }
 
         //Clip移动事件
-        private void ClipMove(MoveEvent move)
+        private void ClipMove(ClipMoveEvent clipMove)
         {
-            int originStart = trackStyleData[move.TrackIndex].Clips[move.ClipIndex].StartID;
-            trackStyleData[move.TrackIndex].Clips[move.ClipIndex].StartID =
-                (int)(mouseCurrentFrameID - (move.OffsetMouseX / WidthPreFrame));
-            trackStyleData[move.TrackIndex].Clips[move.ClipIndex].EndID =
-                trackStyleData[move.TrackIndex].Clips[move.ClipIndex].StartID +
-                trackStyleData[move.TrackIndex].Clips[move.ClipIndex].EndID - originStart;
+            int originStart = trackStyleData[clipMove.TrackIndex].Clips[clipMove.ClipIndex].StartID;
+            trackStyleData[clipMove.TrackIndex].Clips[clipMove.ClipIndex].StartID =
+                (int)(mouseCurrentFrameID - (clipMove.OffsetMouseX / WidthPreFrame));
+            trackStyleData[clipMove.TrackIndex].Clips[clipMove.ClipIndex].EndID =
+                trackStyleData[clipMove.TrackIndex].Clips[clipMove.ClipIndex].StartID +
+                trackStyleData[clipMove.TrackIndex].Clips[clipMove.ClipIndex].EndID - originStart;
             Repaint();
         }
 
@@ -212,7 +264,7 @@ namespace AE_SkillEditor_Plus
             }
         }
 
-        //TODO:测试数据
+        //TODO: 测试数据
         private void AddClip(List<TrackStyleData> data, int trackIndex, object clip)
         {
             var clipData = (clip as ClipStyleData);
@@ -224,7 +276,7 @@ namespace AE_SkillEditor_Plus
             Repaint();
         }
 
-        //TODO:测试数据
+        //TODO: 测试数据
         private void RemoveClip(List<TrackStyleData> data, int trackIndex, int clipIndex)
         {
             data[trackIndex].Clips.RemoveAt(clipIndex);
