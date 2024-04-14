@@ -35,7 +35,19 @@ namespace AE_SkillEditor_Plus
         #endregion
 
         private int TrackHeight = 30; //轨道高度
-        private float WidthPreFrame = 1f; //每帧多宽
+        private float widthPreFrame = 1f;
+
+        private float WidthPreFrame
+        {
+            get { return widthPreFrame; }
+            set
+            {
+                if ((value) <= 0.005f) widthPreFrame =0.005f;
+                else if (value >= 140f) widthPreFrame = 140f;
+                else widthPreFrame = value;
+            }
+        } //每帧多宽
+
         private int HeadWidth = 250; //轨道头部宽度
         private int IntervalHeight = 10; //轨道间隔
         private int ControllerHeight = 30; //控件高度
@@ -69,7 +81,6 @@ namespace AE_SkillEditor_Plus
                 new TrackStyleData()
                 {
                     Name = "测试Track1",
-                    WidthPreFrame = this.WidthPreFrame,
                     Color = Color.green,
                     Clips = new List<ClipStyleData>()
                     {
@@ -82,7 +93,6 @@ namespace AE_SkillEditor_Plus
                 new TrackStyleData()
                 {
                     Name = "测试Track2",
-                    WidthPreFrame = this.WidthPreFrame,
                     Color = Color.green,
                     Clips = new List<ClipStyleData>()
                     {
@@ -95,7 +105,6 @@ namespace AE_SkillEditor_Plus
                 new TrackStyleData()
                 {
                     Name = "测试Track3",
-                    WidthPreFrame = this.WidthPreFrame,
                     Color = Color.green,
                     Clips = new List<ClipStyleData>()
                     {
@@ -119,7 +128,6 @@ namespace AE_SkillEditor_Plus
         {
             //遍历轨道
             int height = 0;
-            TrackControllerStyle.UpdateUI(new Rect(0, height, position.width, ControllerHeight));
             height += ControllerHeight;
             for (var index = 0; index < trackStyleData.Count; index++)
             {
@@ -127,7 +135,7 @@ namespace AE_SkillEditor_Plus
                 var track = new TrackStyle();
                 //为轨道划分Rect
                 var rect = new Rect(0, height, position.width, TrackHeight);
-                track.UpdateUI(this, rect, HeadWidth, trackData, index);
+                track.UpdateUI(this, rect, WidthPreFrame, HeadWidth, trackData, index);
                 height += TrackHeight + IntervalHeight;
             }
 
@@ -189,19 +197,38 @@ namespace AE_SkillEditor_Plus
         //在时间轴上拖动
         private void ProcessTimelineDrag(TimelineDragEvent dragEvent)
         {
-            Debug.Log(dragEvent.EventType);
+            CurrentFrameID = mouseCurrentFrameID;
         }
 
         //时轴缩放
         private void ProcessTimelineScale(TimelineScaleEvent scaleEvent)
         {
-            Debug.Log(scaleEvent.EventType + "--" + scaleEvent.MouseScrollDelta);
+            // Debug.Log(scaleEvent.EventType + "  " + UnityEngine.Event.current.delta.y);
+            WidthPreFrame -= Mathf.Sign(UnityEngine.Event.current.delta.y) * WidthPreFrame * 0.2f;
+            // Debug.Log(WidthPreFrame);
+            //仅仅是+=1的话没有卡死
+            Repaint();
         }
-        
+
         //控件事件
         private void ProcessController(ControllerEvent controller)
         {
-            Debug.Log(controller.ControllerType);
+            switch (controller.ControllerType)
+            {
+                case ControllerType.ToMostBegin:
+                    CurrentFrameID = 0;
+                    break;
+                case ControllerType.ToPre:
+                    CurrentFrameID -= 1;
+                    break;
+                case ControllerType.Play: break;
+                case ControllerType.ToNext:
+                    CurrentFrameID += 1;
+                    break;
+                case ControllerType.ToMostEnd:
+                    CurrentFrameID += 1;
+                    break;
+            }
         }
 
         //Clip大小改变

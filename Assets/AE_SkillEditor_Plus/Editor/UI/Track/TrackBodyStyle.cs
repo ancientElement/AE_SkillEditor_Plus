@@ -7,7 +7,7 @@ namespace AE_SkillEditor_Plus.UI
     //轨道体
     public static class TrackBodyStyle
     {
-        public static void UpdateUI(ClipEditorWindow window,Rect rect,TrackStyleData data,int trackIndex)
+        public static void UpdateUI(ClipEditorWindow window,Rect rect,float widthPreFrame,TrackStyleData data,int trackIndex)
         {
             //绘制背景
             GUI.backgroundColor = Color.gray;
@@ -18,9 +18,9 @@ namespace AE_SkillEditor_Plus.UI
                 var clipData = data.Clips[i];
                 //为Clip划分rect
                 var clipRect = new Rect(
-                    rect.x + clipData.StartID * data.WidthPreFrame,
+                    rect.x + clipData.StartID * widthPreFrame,
                     rect.y,
-                    (clipData.EndID - clipData.StartID) * data.WidthPreFrame,
+                    (clipData.EndID - clipData.StartID) * widthPreFrame,
                     rect.height);
                 TrackClipStyle.UpdateUI(window,clipRect,clipData,trackIndex,i);
             }

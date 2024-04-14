@@ -6,8 +6,6 @@
         {
             this.EventType = EventType.TimelineScale;
         }
-
-        public float MouseScrollDelta;
     }
 
     public class TimelineDragEvent : BaseEvent
