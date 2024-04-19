@@ -7,6 +7,5 @@ namespace AE_SkillEditor_Plus.UI.Data
         public string Name;
         public int StartID;
         public int EndID;
-        public Color Color;
     }
 }

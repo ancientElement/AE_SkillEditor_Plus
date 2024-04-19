@@ -4,12 +4,17 @@
     public enum EventType
     {
         ClipMove,
+        ClipMoveEnd,
+        ClipClick,
         ClipResize,
+        ClipResizeEnd,
         ClipRightClick,
         ClipKeyborad,
         Controller,
         TimelineScale,
-        TimelineDrag
+        TimelineDrag,
+        HeadRightClick,
+        BodyRightClick
     }
     
     //快捷键
@@ -17,7 +22,8 @@
     {
         CtrlC,
         CtrlV,
-        CtrlX
+        CtrlX,
+        Delete
     }
     
     //控件

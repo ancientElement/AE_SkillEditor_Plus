@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using AE_SkillEditor_Plus.Editor.Window;
 
 namespace AE_SkillEditor_Plus.Event
 {
     public static class EventCenter
     {
-        private static Dictionary<ClipEditorWindow, Action<BaseEvent>> events;
+        private static Dictionary<AETimelineEditorWindow, Action<BaseEvent>> events;
 
         static EventCenter()
         {
-            events = new Dictionary<ClipEditorWindow, Action<BaseEvent>>();
+            events = new Dictionary<AETimelineEditorWindow, Action<BaseEvent>>();
         }
 
-        public static void AddEventListener(ClipEditorWindow window, Action<BaseEvent> callback)
+        public static void AddEventListener(AETimelineEditorWindow window, Action<BaseEvent> callback)
         {
             if (events.ContainsKey(window)) events[window] = callback;
             else events.Add(window, callback);
         }
 
-        public static void RemoveEventListener(ClipEditorWindow window, Action<BaseEvent> callback)
+        public static void RemoveEventListener(AETimelineEditorWindow window, Action<BaseEvent> callback)
         {
             if (events.ContainsKey(window)) events.Remove(window);
         }
 
-        public static void TrigerEvent(ClipEditorWindow window, BaseEvent baseEvent)
+        public static void TrigerEvent(AETimelineEditorWindow window, BaseEvent baseEvent)
         {
             events[window]?.Invoke(baseEvent);
         }
