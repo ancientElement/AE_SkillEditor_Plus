@@ -1,7 +1,7 @@
-﻿namespace AE_SkillEditor_Plus.Event
+﻿namespace AE_SkillEditor_Plus.AEUIEvent
 {
     public class BaseEvent
     {
-        public EventType EventType { get; protected set; }
+        public AEUIEventType AeuiEventType { get; protected set; }
     }
 }

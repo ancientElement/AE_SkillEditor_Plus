@@ -176,9 +176,9 @@ namespace AE_SkillEditor_Plus.Factory
 
         public static void MoveClip(AETimelineAsset asset, string path, int trackIndex, int clipIndex, int target)
         {
-            if (target < 0) target = 0;
+            if (target <= 0) target = 0;
             //找到左边第一个 小于他的数
-            if (asset.Tracks[trackIndex].Clips.Count > 1 && target > 0)
+            if (asset.Tracks[trackIndex].Clips.Count > 1)
             {
                 int leftStartID = Int32.MinValue;
                 int left = -1;
@@ -209,27 +209,40 @@ namespace AE_SkillEditor_Plus.Factory
                     }
                 }
 
-                // Debug.Log("left " + leftStartID + " right " + rightStartID);
+                // Debug.Log("left " + leftStartID + " right " + rightStartID + "target" + target);
 
                 if (left != -1 && target < leftStartID + asset.Tracks[trackIndex].Clips[left].Duration)
                 {
-                    target = leftStartID + asset.Tracks[trackIndex].Clips[left].Duration;
+                    return;
                 }
 
                 if (right != -1 && target + asset.Tracks[trackIndex].Clips[clipIndex].Duration > rightStartID)
                 {
-                    target = rightStartID - asset.Tracks[trackIndex].Clips[clipIndex].Duration;
+                    return;
                 }
             }
 
             // Debug.Log(targetStartIndex);
             asset.Tracks[trackIndex].Clips[clipIndex].StartID = target;
 
-            Save(asset, path);
+            // Save(asset, path);
         }
 
         public static void Save(AETimelineAsset asset, string path)
         {
+            // Debug.Log("保存");
+            //遍历asset的轨道
+            for (int i = 0; i < asset.Tracks.Count; i++)
+            {
+                var track = asset.Tracks[i];
+                //为clip按照startID排序
+                track.Clips.Sort((StandardClip x, StandardClip y) =>
+                {
+                    if (x.StartID > y.StartID) return 1;
+                    else return -1;
+                });
+            }
+
             //序列化timeline
             BinaryFormatter formatter = new BinaryFormatter();
             byte[] binaryData;

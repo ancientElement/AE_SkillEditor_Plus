@@ -1,12 +1,11 @@
 ﻿using System;
 using AE_SkillEditor_Plus.Editor.Window;
-using AE_SkillEditor_Plus.Event;
+using AE_SkillEditor_Plus.AEUIEvent;
 using AE_SkillEditor_Plus.UI.Data;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using EventType = AE_SkillEditor_Plus.Event.EventType;
 
 namespace AE_SkillEditor_Plus.UI
 {

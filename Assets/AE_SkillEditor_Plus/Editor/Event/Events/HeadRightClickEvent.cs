@@ -1,4 +1,4 @@
-﻿namespace AE_SkillEditor_Plus.Event
+﻿namespace AE_SkillEditor_Plus.AEUIEvent
 {
     public class HeadRightClickEvent : BaseEvent
     {
@@ -6,7 +6,7 @@
         
         public HeadRightClickEvent()
         {
-            EventType = EventType.HeadRightClick;
+            AeuiEventType = AEUIEventType.HeadRightClick;
         }
     }
 }

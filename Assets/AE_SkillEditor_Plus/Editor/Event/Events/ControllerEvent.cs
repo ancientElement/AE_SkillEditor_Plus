@@ -1,10 +1,10 @@
-﻿namespace AE_SkillEditor_Plus.Event
+﻿namespace AE_SkillEditor_Plus.AEUIEvent
 {
     public class ControllerEvent : BaseEvent
     {
         public ControllerEvent()
         {
-            this.EventType = EventType.Controller;
+            this.AeuiEventType = AEUIEventType.Controller;
         }
 
         public ControllerType ControllerType;

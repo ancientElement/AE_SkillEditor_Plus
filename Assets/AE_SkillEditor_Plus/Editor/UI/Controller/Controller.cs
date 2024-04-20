@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AE_SkillEditor_Plus.Editor.Window;
-using AE_SkillEditor_Plus.Event;
+using AE_SkillEditor_Plus.AEUIEvent;
 using AE_SkillEditor_Plus.Factory;
 using AE_SkillEditor_Plus.RunTime;
 using OpenCover.Framework.Model;
@@ -24,10 +24,25 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
 
         public static void UpdateGUI(AETimelineEditorWindow window, Rect rect)
         {
-            float itemWidth = rect.width / 5;
+            rect = new Rect(rect.x + 10f, rect.y, rect.width - 20f, rect.height);
+            float topHeight = rect.height * 0.5f;
+            //绘制帧率
+            float FPSWidth = rect.width / 3;
+            var FPSRect = new Rect(rect.x, rect.y, FPSWidth, topHeight);
+            if (GUI.Button(FPSRect, window.FPS + "帧", EditorStyles.popup))
+            {
+                GenericMenu menu = new GenericMenu();
+                // 添加菜单项
+                //拿到所有StandardTrack的子类型
+                menu.AddItem(new GUIContent("30"), window.FPS == 30, () => window.FPS = 30);
+                menu.AddItem(new GUIContent("60"), window.FPS == 60, () => window.FPS = 60);
+                menu.AddItem(new GUIContent("120"), window.FPS == 120, () => window.FPS = 120);
+                // 显示菜单
+                menu.ShowAsContext();
+            }
+
             //绘制ObjectFIled
-            float objectFiledHeight = rect.height * 0.5f;
-            var objectFiledRect = new Rect(rect.x, rect.y, rect.width, objectFiledHeight);
+            var objectFiledRect = new Rect(FPSWidth + rect.x, rect.y, rect.width - FPSWidth, topHeight);
             //绘制一个灰色的box lable为 点击选择文件
             if (GUI.Button(objectFiledRect, window.AssetPath.Split("/").Last().Split(".")[0], EditorStyles.popup))
             {
@@ -55,11 +70,12 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
             }
 
             //绘制控件
+            float itemWidth = rect.width / 5;
             float x = 0;
             for (int i = 0; i < 5; i++)
             {
-                var itemRect = new Rect(rect.x + x, rect.y + objectFiledHeight, itemWidth,
-                    rect.height - objectFiledHeight);
+                var itemRect = new Rect(rect.x + x, rect.y + topHeight, itemWidth,
+                    rect.height - topHeight);
                 GUI.backgroundColor = new Color(200 / 255f, 200 / 255f, 200 / 255f, 1f);
                 switch (i)
                 {

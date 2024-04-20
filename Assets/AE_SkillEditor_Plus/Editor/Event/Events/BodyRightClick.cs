@@ -1,4 +1,4 @@
-﻿namespace AE_SkillEditor_Plus.Event
+﻿namespace AE_SkillEditor_Plus.AEUIEvent
 {
     public class BodyRightClick : BaseEvent
     {
@@ -6,7 +6,7 @@
         public int MouseFrameID;
         public BodyRightClick()
         {
-            this.EventType = EventType.BodyRightClick;
+            this.AeuiEventType = AEUIEventType.BodyRightClick;
         }
     }
 }

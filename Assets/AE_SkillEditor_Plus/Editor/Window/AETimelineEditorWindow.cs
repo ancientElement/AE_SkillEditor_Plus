@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using AE_SkillEditor_Plus.Editor.UI.Controller;
-using AE_SkillEditor_Plus.Event;
+using AE_SkillEditor_Plus.AEUIEvent;
 using AE_SkillEditor_Plus.Factory;
 using AE_SkillEditor_Plus.RunTime;
 using AE_SkillEditor_Plus.RunTime.Attribute;
@@ -12,9 +12,7 @@ using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Serialization;
-using EventType = AE_SkillEditor_Plus.Event.EventType;
 using Random = UnityEngine.Random;
-using Range = UnityEngine.SocialPlatforms.Range;
 
 namespace AE_SkillEditor_Plus.Editor.Window
 {
@@ -47,7 +45,8 @@ namespace AE_SkillEditor_Plus.Editor.Window
             }
         } //每帧多宽
 
-        private int HeadWidth = 250; //轨道头部宽度
+        private int HeadWidth = 260; //轨道头部宽度
+
         private int IntervalHeight = 10; //轨道间隔
         private int ControllerHeight = 38; //控件高度
         private int currentFrameID;
@@ -72,7 +71,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private int[] HighLight = { -1, -1 }; //选中的Clip
 
         private bool IsPlaying; //是否在播放
-        private int FPS = 60; //帧率
+        public int FPS = 60; //帧率
         private float OneFrameTimer; //一帧时长的计时器
 
         private AETimelineAsset Asset;
@@ -147,113 +146,93 @@ namespace AE_SkillEditor_Plus.Editor.Window
             //划分左右
             var leftRect = new Rect(0, 0, HeadWidth, position.height);
             var rightRect = new Rect(HeadWidth, 0, position.width - HeadWidth, position.height);
-            //划分控件与轨道头
+
             var controllerRect = new Rect(leftRect.x, leftRect.y, leftRect.width, ControllerHeight);
             var trackHeadRect = new Rect(leftRect.x, 10 + leftRect.y + ControllerHeight, leftRect.width,
-                leftRect.height - ControllerHeight-10);
-            //划分时间轴与轨道体
-            var timelineRect = new Rect(rightRect.x, rightRect.y, rightRect.width, ControllerHeight);
-            var trackbodyRect = new Rect(rightRect.x, 10 + rightRect.y + ControllerHeight, rightRect.width,
+                leftRect.height - ControllerHeight - 10);
+            var trackbodyRect = new Rect(rightRect.x, 10 + rightRect.y + ControllerHeight,
+                rightRect.width,
                 rightRect.height - ControllerHeight - 10);
-            // EditorGUI.DrawRect(controllerRect,
-            //     new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
-            // EditorGUI.DrawRect(trackHeadRect,
-            //     new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
-            // EditorGUI.DrawRect(timelineRect,
-            //     new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
-            // EditorGUI.DrawRect(trackbodyRect,
-            //     new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
+            var timelineRect = new Rect(rightRect.x, rightRect.y, rightRect.width, ControllerHeight);
 
-
-            //轨道头
-            ScrollPosHead = GUI.BeginScrollView(trackHeadRect,
-                ScrollPosHead, new Rect(trackHeadRect.x, trackHeadRect.y, trackHeadRect.width, 1000f));
-            ScrollPosBody.y = ScrollPosHead.y;
-            float height = trackHeadRect.y;
-            for (var index = 0; index < styleData.Count; index++)
+            // 事件添加轨道
+            if (leftRect.Contains(UnityEngine.Event.current.mousePosition) &&
+                UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown &&
+                UnityEngine.Event.current.button == 1)
             {
-                var trackData = styleData[index];
-                var track = new TrackStyle();
-                //为轨道划分Rect
-                var rectHead = new Rect(trackHeadRect.x, height, trackHeadRect.width, TrackHeight);
-                TrackHeadStyle.UpdateUI(this, rectHead, trackData, index);
-                height += TrackHeight + IntervalHeight;
+                GenericMenu menu = new GenericMenu();
+                // 添加菜单项
+                //拿到所有StandardTrack的子类型
+                CreateAddTreakMenu(Asset.Tracks.Count, menu);
+                // 显示菜单
+                menu.ShowAsContext();
             }
 
+            //时间轴
+            var newTimeLineRect = new Rect(timelineRect.x, timelineRect.y, timelineRect.width + ScrollPosTimeline.x,
+                timelineRect.height);
+            ScrollPosTimeline.y = 0;
+            ScrollPosTimeline = GUI.BeginScrollView(timelineRect, ScrollPosTimeline, newTimeLineRect, GUIStyle.none,
+                GUIStyle.none);
+            // EditorGUI.DrawRect(newTimeLineRect,
+            // new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
+            TimeLine.UpdateGUI(this, CurrentFrameID, WidthPreFrame, newTimeLineRect);
             GUI.EndScrollView();
 
             //轨道体
-            ScrollPosBody = GUI.BeginScrollView(trackbodyRect,
-                ScrollPosBody, new Rect(trackbodyRect.x, trackbodyRect.y, 10000f, 1000f));
+            var newTrackBodyRect = new Rect(trackbodyRect.x, trackbodyRect.y, trackbodyRect.width + ScrollPosBody.x,
+                trackbodyRect.height + ScrollPosBody.y);
+            ScrollPosBody = GUI.BeginScrollView(trackbodyRect, ScrollPosBody, newTrackBodyRect
+                , true, true);
             ScrollPosTimeline.x = ScrollPosBody.x;
-            Debug.Log(ScrollPosBody);
-            height = trackbodyRect.y;
+            ScrollPosHead.y = ScrollPosBody.y;
+            // EditorGUI.DrawRect(newTrackBodyRect,
+            // new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
+            float height = trackbodyRect.y;
             for (var index = 0; index < styleData.Count; index++)
             {
                 var trackData = styleData[index];
                 var track = new TrackStyle();
                 //为轨道划分Rect
-                var rectBody = new Rect(trackbodyRect.x, height, trackbodyRect.width, TrackHeight);
+                var rectBody = new Rect(trackbodyRect.x, height, newTrackBodyRect.width, TrackHeight);
                 TrackBodyStyle.UpdateUI(this, rectBody, HighLight, widthPreFrame, trackData, index);
                 height += TrackHeight + IntervalHeight;
             }
 
             GUI.EndScrollView();
 
-            //控件
-            Controller.UpdateGUI(this, controllerRect);
-            //timeline
-            TimeLine.UpdateGUI(this, CurrentFrameID, WidthPreFrame, timelineRect);
+            TimeLine.UpdateCurFrameUI(this, CurrentFrameID, WidthPreFrame,
+                new Rect(timelineRect.x - ScrollPosBody.x, timelineRect.y, timelineRect.width + ScrollPosBody.x,
+                    timelineRect.height));
 
-            // //事件添加轨道
-            // var leftReft = new Rect(0, ControllerHeight, HeadWidth, position.height);
-            // if (leftReft.Contains(UnityEngine.Event.current.mousePosition) &&
-            //     UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown &&
-            //     UnityEngine.Event.current.button == 1)
-            // {
-            //     GenericMenu menu = new GenericMenu();
-            //     // 添加菜单项
-            //     //拿到所有StandardTrack的子类型
-            //     Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            //     //遍历子类型得到菜单
-            //     foreach (Assembly assembly in assemblies)
-            //     {
-            //         foreach (Type type in assembly.GetTypes())
-            //         {
-            //             if (type.IsSubclassOf(typeof(StandardTrack)))
-            //             {
-            //                 var obj = Activator.CreateInstance(type) as StandardTrack;
-            //                 menu.AddItem(new GUIContent("添加轨道/" + type.Name), false,
-            //                     () => { AETimelineFactory.CreatTrack(Asset, AssetPath, Asset.Tracks.Count, obj); });
-            //             }
-            //         }
-            //     }
-            //
-            //     // 显示菜单
-            //     menu.ShowAsContext();
-            // }
-            //
-            // //遍历轨道
-            // int height = 0;
-            // height += ControllerHeight;
-            // height += 10;
-            // for (var index = 0; index < styleData.Count; index++)
-            // {
-            //     var trackData = styleData[index];
-            //     var track = new TrackStyle();
-            //     //为轨道划分Rect
-            //     var rect = new Rect(0, height, position.width, TrackHeight);
-            //     // track.UpdateUI(this, rect, HighLight, WidthPreFrame, HeadWidth, trackData, index);
-            //     height += TrackHeight + IntervalHeight;
-            // }
-            //
-            // //划分控件 Timeline
-            // var controllerRect = new Rect(0, 0, HeadWidth - 10f, ControllerHeight);
-            // var timelineRect = new Rect(HeadWidth, 2.5f, position.width - HeadWidth, ControllerHeight - 2.5f);
-            // //绘制Timeline
-            // TimeLine.UpdateGUI(this, CurrentFrameID, WidthPreFrame, timelineRect);
-            // //绘制控件
-            // Controller.UpdateGUI(this, controllerRect);
+            EditorGUI.DrawRect(new Rect(leftRect.x, leftRect.y, leftRect.width - 10f, leftRect.height),
+                new Color(56f / 255, 56f / 255, 56f / 255));
+
+            //控件
+            // EditorGUI.DrawRect(controllerRect,
+            // new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
+            Controller.UpdateGUI(this, controllerRect);
+
+            //轨道头部
+            var newTrackHeadRect = new Rect(trackHeadRect.x, trackHeadRect.y, trackHeadRect.width,
+                trackHeadRect.height + ScrollPosHead.y);
+            ScrollPosHead.x = 0;
+            ScrollPosHead = GUI.BeginScrollView(trackHeadRect, ScrollPosHead, newTrackHeadRect
+                , GUIStyle.none, GUIStyle.none);
+            // EditorGUI.DrawRect(newTrackHeadRect,
+            // new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
+            height = trackHeadRect.y;
+            for (var index = 0; index < styleData.Count; index++)
+            {
+                var trackData = styleData[index];
+                var track = new TrackStyle();
+                //为轨道划分Rect
+                var rectHead = new Rect(newTrackHeadRect.x, height, newTrackHeadRect.width, TrackHeight);
+                TrackHeadStyle.UpdateUI(this, rectHead, trackData, index);
+                height += TrackHeight + IntervalHeight;
+            }
+
+            GUI.EndScrollView();
         }
 
         private void Update()
@@ -270,6 +249,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
 
         private void Tick(int frameID)
         {
+            // Debug.Log(UnityEngine.Event.current.mousePosition.x);
             // Debug.Log(currentFrameID);
         }
 
@@ -278,57 +258,57 @@ namespace AE_SkillEditor_Plus.Editor.Window
         //处理事件
         private void ProcessEvent(BaseEvent baseEvent)
         {
-            switch (baseEvent.EventType)
+            switch (baseEvent.AeuiEventType)
             {
                 //Clip事件
-                case EventType.ClipMove:
+                case AEUIEventType.ClipMove:
                 {
                     ClipMove((ClipMoveEvent)baseEvent);
                     break;
                 }
-                case EventType.ClipResize:
+                case AEUIEventType.ClipResize:
                 {
                     ClipResize((ClipResizeEvent)baseEvent);
                     break;
                 }
-                case EventType.ClipKeyborad:
+                case AEUIEventType.ClipKeyborad:
                 {
                     ProcessKeyborad((KeyboradEvent)baseEvent);
                     break;
                 }
-                case EventType.ClipClick:
+                case AEUIEventType.ClipClick:
                     ClipClick((ClipClickEvent)baseEvent);
                     break;
-                case EventType.ClipRightClick:
+                case AEUIEventType.ClipRightClick:
                     ClipRightClick((ClipRightClickEvent)baseEvent);
                     break;
-                case EventType.ClipResizeEnd:
-                case EventType.ClipMoveEnd:
+                case AEUIEventType.ClipResizeEnd:
+                case AEUIEventType.ClipMoveEnd:
                     AETimelineFactory.Save(Asset, AssetPath);
                     break;
                 //控件事件
-                case EventType.Controller:
+                case AEUIEventType.Controller:
                 {
                     ProcessController((ControllerEvent)baseEvent);
                     break;
                 }
                 //Timeline
-                case EventType.TimelineScale:
+                case AEUIEventType.TimelineScale:
                 {
                     ProcessTimelineScale((TimelineScaleEvent)baseEvent);
                     break;
                 }
-                case EventType.TimelineDrag:
+                case AEUIEventType.TimelineDrag:
                 {
                     ProcessTimelineDrag((TimelineDragEvent)baseEvent);
                     break;
                 }
                 //右键轨道头部
-                case EventType.HeadRightClick:
+                case AEUIEventType.HeadRightClick:
                     ProcessHeadRightClick((HeadRightClickEvent)baseEvent);
                     break;
                 //右键轨道体
-                case EventType.BodyRightClick:
+                case AEUIEventType.BodyRightClick:
                     ProcessBodyRightClick((BodyRightClick)baseEvent);
                     break;
             }
@@ -350,7 +330,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         //时轴缩放
         private void ProcessTimelineScale(TimelineScaleEvent scaleEvent)
         {
-            // Debug.Log(scaleEvent.EventType + "  " + UnityEngine.Event.current.delta.y);
+            // Debug.Log(scaleEvent.AEUIEventType + "  " + UnityEngine.Event.current.delta.y);
             WidthPreFrame -= Mathf.Sign(UnityEngine.Event.current.delta.y) * WidthPreFrame * 0.2f;
             // Debug.Log(WidthPreFrame);
             //仅仅是+=1的话没有卡死
@@ -446,7 +426,21 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private void ProcessHeadRightClick(HeadRightClickEvent click)
         {
             GenericMenu menu = new GenericMenu();
-            // 添加菜单项
+            //创建轨道菜单
+            CreateAddTreakMenu(click.TrackIndex, menu);
+            menu.AddItem(new GUIContent("删除轨道"), false, () =>
+            {
+                AETimelineFactory.RemoveTrack(Asset, AssetPath, click.TrackIndex);
+                HighLight[0] = -1;
+                HighLight[1] = -1;
+            });
+            // 显示菜单
+            menu.ShowAsContext();
+        }
+
+        // 添加创建轨道菜单项
+        private void CreateAddTreakMenu(int trackIndex, GenericMenu menu)
+        {
             //拿到所有StandardTrack的子类型
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             //遍历子类型得到菜单
@@ -458,27 +452,17 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     {
                         var obj = Activator.CreateInstance(type) as StandardTrack;
                         menu.AddItem(new GUIContent("添加轨道/" + type.Name), false,
-                            () => { AETimelineFactory.CreatTrack(Asset, AssetPath, click.TrackIndex, obj); });
+                            () => { AETimelineFactory.CreatTrack(Asset, AssetPath, trackIndex, obj); });
                     }
                 }
             }
-
-            menu.AddItem(new GUIContent("删除轨道"), false,
-                () =>
-                {
-                    AETimelineFactory.RemoveTrack(Asset, AssetPath, click.TrackIndex);
-                    HighLight[0] = -1;
-                    HighLight[1] = -1;
-                });
-            // 显示菜单
-            menu.ShowAsContext();
         }
 
         //右键轨道体
         private void ProcessBodyRightClick(BodyRightClick click)
         {
             GenericMenu menu = new GenericMenu();
-            // 添加菜单项
+            // 添加添加Clip
             menu.AddItem(new GUIContent("添加Clip"), false,
                 () => { AETimelineFactory.AddClip(Asset, AssetPath, click.TrackIndex, click.MouseFrameID); });
             // 显示菜单

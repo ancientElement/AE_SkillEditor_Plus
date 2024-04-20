@@ -1,7 +1,7 @@
-﻿namespace AE_SkillEditor_Plus.Event
+﻿namespace AE_SkillEditor_Plus.AEUIEvent
 {
     //事件类型
-    public enum EventType
+    public enum AEUIEventType
     {
         ClipMove,
         ClipMoveEnd,

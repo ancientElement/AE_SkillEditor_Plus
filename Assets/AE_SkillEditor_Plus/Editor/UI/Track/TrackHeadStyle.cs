@@ -1,5 +1,5 @@
 ﻿using AE_SkillEditor_Plus.Editor.Window;
-using AE_SkillEditor_Plus.Event;
+using AE_SkillEditor_Plus.AEUIEvent;
 using AE_SkillEditor_Plus.UI.Data;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +11,7 @@ namespace AE_SkillEditor_Plus.UI
     {
         public static void UpdateUI(AETimelineEditorWindow window, Rect rect, TrackStyleData data, int trackIndex)
         {
+            rect = new Rect(rect.x + 10f, rect.y, rect.width - 20f, rect.height);
             // Debug.Log(data.Name + rect);
             //绘制背景
             EditorGUI.DrawRect(rect, new Color(97f / 255, 97f / 255, 97f / 255));

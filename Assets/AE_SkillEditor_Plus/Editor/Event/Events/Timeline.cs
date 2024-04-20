@@ -1,10 +1,10 @@
-﻿namespace AE_SkillEditor_Plus.Event
+﻿namespace AE_SkillEditor_Plus.AEUIEvent
 {
     public class TimelineScaleEvent : BaseEvent
     {
         public TimelineScaleEvent()
         {
-            this.EventType = EventType.TimelineScale;
+            this.AeuiEventType = AEUIEventType.TimelineScale;
         }
     }
 
@@ -12,7 +12,7 @@
     {
         public TimelineDragEvent()
         {
-            this.EventType = EventType.TimelineDrag;
+            this.AeuiEventType = AEUIEventType.TimelineDrag;
         }
     }
 }

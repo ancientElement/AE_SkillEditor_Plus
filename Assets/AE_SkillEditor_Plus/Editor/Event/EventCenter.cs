@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AE_SkillEditor_Plus.Editor.Window;
 
-namespace AE_SkillEditor_Plus.Event
+namespace AE_SkillEditor_Plus.AEUIEvent
 {
     public static class EventCenter
     {

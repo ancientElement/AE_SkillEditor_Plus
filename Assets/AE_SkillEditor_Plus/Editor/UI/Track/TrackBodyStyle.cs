@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AE_SkillEditor_Plus.Editor.Window;
-using AE_SkillEditor_Plus.Event;
+using AE_SkillEditor_Plus.AEUIEvent;
 using AE_SkillEditor_Plus.UI.Data;
 using UnityEditor;
 using UnityEngine;
@@ -14,8 +14,9 @@ namespace AE_SkillEditor_Plus.UI
             TrackStyleData data,
             int trackIndex)
         {
+            // Debug.Log(rect);
             //绘制背景
-            EditorGUI.DrawRect(new Rect(rect.x,rect.y,10000f,rect.height), new Color(64f / 255, 64f / 255, 64f / 255));
+            EditorGUI.DrawRect(new Rect(rect.x,rect.y,rect.width,rect.height), new Color(64f / 255, 64f / 255, 64f / 255));
             //划分
             for (int i = 0; i < data.Clips.Count; i++)
             {

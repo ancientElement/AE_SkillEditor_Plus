@@ -1,4 +1,4 @@
-﻿namespace AE_SkillEditor_Plus.Event
+﻿namespace AE_SkillEditor_Plus.AEUIEvent
 {
     public class ClipEvent : BaseEvent
     {
@@ -10,7 +10,7 @@
     {
         public ClipMoveEvent()
         {
-            this.EventType = EventType.ClipMove;
+            this.AeuiEventType = AEUIEventType.ClipMove;
         }
 
         public float OffsetMouseX; //鼠标相对Start的偏移 单位是Rect的x
@@ -20,7 +20,7 @@
     {
         public ClipMoveEndEvent()
         {
-            this.EventType = EventType.ClipMoveEnd;
+            this.AeuiEventType = AEUIEventType.ClipMoveEnd;
         }
     }
 
@@ -28,7 +28,7 @@
     {
         public ClipClickEvent()
         {
-            this.EventType = EventType.ClipClick;
+            this.AeuiEventType = AEUIEventType.ClipClick;
         }
 
         public float OffsetMouseX; //鼠标相对Start的偏移 单位是Rect的x
@@ -38,7 +38,7 @@
     {
         public ClipResizeEvent()
         {
-            this.EventType = EventType.ClipResize;
+            this.AeuiEventType = AEUIEventType.ClipResize;
         }
 
         public float OffsetMouseX; //鼠标相对End的偏移 单位是Rect的x
@@ -48,7 +48,7 @@
     {
         public ClipResizeEndEvent()
         {
-            this.EventType = EventType.ClipResizeEnd;
+            this.AeuiEventType = AEUIEventType.ClipResizeEnd;
         }
     }
     
@@ -56,7 +56,7 @@
     {
         public ClipRightClickEvent()
         {
-            this.EventType = EventType.ClipRightClick;
+            this.AeuiEventType = AEUIEventType.ClipRightClick;
         }
     }
 
@@ -64,7 +64,7 @@
     {
         public KeyboradEvent()
         {
-            this.EventType = EventType.ClipKeyborad;
+            this.AeuiEventType = AEUIEventType.ClipKeyborad;
         }
 
         public Shortcut Shortcut;

@@ -1,5 +1,5 @@
 ﻿using AE_SkillEditor_Plus.Editor.Window;
-using AE_SkillEditor_Plus.Event;
+using AE_SkillEditor_Plus.AEUIEvent;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
         private static TimelineScaleEvent scaleEvent;
         private static TimelineDragEvent dragEvent;
         const float oneNumWidth = 7.5f; //一个数字的宽度
-        private static bool leftMouseDown;
+        // private static bool leftMouseDown;
 
         static TimeLine()
         {
@@ -26,18 +26,20 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
             //绘制时间轴
             Handles.color = Color.white; // 设置线条颜色
             float x = rect.x;
-            float maxX = rect.xMax;
+            //计算大间隔 与小间隔
             int smallLineInterval;
             int bigLineInterval;
             bigLineInterval = Mathf.Max((int)(100 / widthPreFrame), 5);
             bigLineInterval = bigLineInterval - (bigLineInterval % 5);
             bigLineInterval = Mathf.Max(bigLineInterval, 5);
             smallLineInterval = bigLineInterval / 5;
+            // Debug.Log(bigLineInterval);
             int i = 0;
-            while (x < maxX)
+            int end = i + (int)(rect.width / widthPreFrame);
+            while (i < end)
             {
                 string numStr = i.ToString();
-                if (i % bigLineInterval == 0)
+                if ((i) % bigLineInterval == 0)
                 {
                     GUI.Label(new Rect(x, rect.y + rect.height * 0.2f, numStr.Length * (oneNumWidth + 5f), 20f),
                         numStr); // 绘制数字
@@ -52,16 +54,24 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
                 x += widthPreFrame * smallLineInterval; // 根据每帧间隔移动位置
             }
 
+            // UpdateCurFrameUI(window, currentFrameID, widthPreFrame, rect);
+
+            ProcessEvent(window, rect);
+        }
+
+        public static void UpdateCurFrameUI(AETimelineEditorWindow window, int currentFrameID, float widthPreFrame,
+            Rect rect)
+        {
             //绘制当前帧指向线条
             Handles.color = Color.white; // 设置线条颜色
-            float currentFrameRectX = rect.x + currentFrameID * widthPreFrame;
+            float currentFrameRectX = rect.x + (currentFrameID) * widthPreFrame;
             Handles.DrawLine(new Vector2(currentFrameRectX, rect.y + rect.height * 0.5f),
                 new Vector2(currentFrameRectX, window.position.yMax)); // 绘制线条\
             //绘制标签
             GUI.backgroundColor = Color.white;
             GUI.Box(new Rect(currentFrameRectX - 5f, rect.y, 10f, rect.height - 5f), "", "WhiteBackground");
             //绘制帧数
-            string currentFrameIDStr = currentFrameID.ToString();
+            string currentFrameIDStr = (currentFrameID).ToString();
             int strLength = currentFrameIDStr.Length;
 
             GUI.color = Color.black;
@@ -74,27 +84,26 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
                 new Rect(currentFrameRectX - oneNumWidth * 0.5f * strLength, rect.y, oneNumWidth * strLength,
                     rect.height - 15f),
                 currentFrameIDStr, "WhiteBackground");
-
-            ProcessEvent(window, rect);
         }
 
         private static void ProcessEvent(AETimelineEditorWindow window, Rect rect)
         {
+            // if (rect.Contains(UnityEngine.Event.current.mousePosition) &&
+            //     UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown &&
+            //     UnityEngine.Event.current.button == 0)
+            // {
+            //     EventCenter.TrigerEvent(window, dragEvent);
+            //     leftMouseDown = true;
+            // }
+            //
+            // if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseUp &&
+            //     UnityEngine.Event.current.button == 0)
+            // {
+            //     leftMouseDown = false;
+            //     Debug.Log("leftMouseDown");
+            // }
+
             if (rect.Contains(UnityEngine.Event.current.mousePosition) &&
-                UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown &&
-                UnityEngine.Event.current.button == 0)
-            {
-                EventCenter.TrigerEvent(window, dragEvent);
-                leftMouseDown = true;
-            }
-
-            if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseUp &&
-                UnityEngine.Event.current.button == 0)
-            {
-                leftMouseDown = false;
-            }
-
-            if (leftMouseDown &&
                 UnityEngine.Event.current.type == UnityEngine.EventType.MouseDrag &&
                 UnityEngine.Event.current.button == 0)
             {
