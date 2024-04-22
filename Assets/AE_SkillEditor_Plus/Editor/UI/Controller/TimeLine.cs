@@ -96,12 +96,13 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
             //     leftMouseDown = true;
             // }
             //
-            // if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseUp &&
-            //     UnityEngine.Event.current.button == 0)
-            // {
-            //     leftMouseDown = false;
-            //     Debug.Log("leftMouseDown");
-            // }
+            if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseUp &&
+                UnityEngine.Event.current.button == 0)
+            {
+                // leftMouseDown = false;
+                EventCenter.TrigerEvent(window, new TimelineDragEndEvent());
+                // Debug.Log("leftMouseDown");
+            }
 
             if (rect.Contains(UnityEngine.Event.current.mousePosition) &&
                 UnityEngine.Event.current.type == UnityEngine.EventType.MouseDrag &&

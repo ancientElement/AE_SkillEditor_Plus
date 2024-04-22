@@ -7,6 +7,14 @@
             this.AeuiEventType = AEUIEventType.TimelineScale;
         }
     }
+    
+    public class TimelineDragEndEvent : BaseEvent
+    {
+        public TimelineDragEndEvent()
+        {
+            this.AeuiEventType = AEUIEventType.TimelineDragEnd;
+        }
+    }
 
     public class TimelineDragEvent : BaseEvent
     {

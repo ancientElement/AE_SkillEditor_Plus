@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
+using AE_SkillEditor_Plus.Editor.Driver;
 using AE_SkillEditor_Plus.RunTime;
 using AE_SkillEditor_Plus.RunTime.Attribute;
 using UnityEditor;
@@ -251,6 +252,9 @@ namespace AE_SkillEditor_Plus.Factory
             //时间轴的总体时长
             asset.Duration = maxFar;
             // Debug.Log(maxFar);
+
+            //重新生成
+            AETimelineEditorTick.PlayAsset(asset);
             
             //序列化timeline
             BinaryFormatter formatter = new BinaryFormatter();

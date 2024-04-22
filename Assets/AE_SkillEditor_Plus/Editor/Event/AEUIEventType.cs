@@ -14,7 +14,8 @@
         TimelineScale,
         TimelineDrag,
         HeadRightClick,
-        BodyRightClick
+        BodyRightClick,
+        TimelineDragEnd
     }
     
     //快捷键

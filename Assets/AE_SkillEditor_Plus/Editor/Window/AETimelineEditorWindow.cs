@@ -52,6 +52,8 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private int ControllerHeight = 38; //控件高度
         private int currentFrameID;
 
+        private int TargetFrameID;
+
         private int CurrentFrameID
         {
             get { return currentFrameID; }
@@ -86,6 +88,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 if (value == "") return;
                 assetPath = value;
                 Asset = AETimelineFactory.LoadTimeLineAsset(assetPath);
+                AETimelineEditorTick.PlayAsset(Asset);
             }
         }
 
@@ -98,6 +101,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         {
             EventCenter.AddEventListener(this, ProcessEvent);
             if (AssetPath != "") Asset = AETimelineFactory.LoadTimeLineAsset(AssetPath);
+            AETimelineEditorTick.PlayAsset(Asset);
         }
 
         //销毁
@@ -238,8 +242,20 @@ namespace AE_SkillEditor_Plus.Editor.Window
 
         private void Update()
         {
+            if (TargetFrameID != -1 && CurrentFrameID != TargetFrameID)
+            {
+                for (int i = 0; i < 20; i++)
+                {
+                    if (TargetFrameID != -1 && CurrentFrameID != TargetFrameID)
+                    {
+                        CurrentFrameID += (TargetFrameID - CurrentFrameID) > 0 ? 1 : -1;
+                    }
+                    else break;
+                }
+            }
+
             if (!IsPlaying) return;
-            if (CurrentFrameID > Asset.Duration)
+            if (CurrentFrameID >= Asset.Duration)
             {
                 IsPlaying = false;
                 return;
@@ -256,6 +272,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
 
         private void Tick(int frameID)
         {
+            if (Asset == null) return;
             // Debug.Log(UnityEngine.Event.current.mousePosition.x);
             // Debug.Log(currentFrameID);
             AETimelineEditorTick.Tick(CurrentFrameID, FPS);
@@ -311,6 +328,11 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     ProcessTimelineDrag((TimelineDragEvent)baseEvent);
                     break;
                 }
+                case AEUIEventType.TimelineDragEnd:
+                {
+                    ProcessTimelineDragEnd((TimelineDragEndEvent)baseEvent);
+                    break;
+                }
                 //右键轨道头部
                 case AEUIEventType.HeadRightClick:
                     ProcessHeadRightClick((HeadRightClickEvent)baseEvent);
@@ -332,7 +354,15 @@ namespace AE_SkillEditor_Plus.Editor.Window
         //在时间轴上拖动
         private void ProcessTimelineDrag(TimelineDragEvent dragEvent)
         {
-            CurrentFrameID = MouseCurrentFrameID;
+            TargetFrameID = MouseCurrentFrameID;
+            // UnityEngine.Event.current.Use();
+            // Debug.Log(MouseCurrentFrameID);
+        }
+
+        //在时间轴上结束
+        private void ProcessTimelineDragEnd(TimelineDragEndEvent baseEvent)
+        {
+            TargetFrameID = -1;
         }
 
         //时轴缩放
