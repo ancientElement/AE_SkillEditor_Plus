@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using AE_SkillEditor_Plus.RunTime;
@@ -232,17 +233,25 @@ namespace AE_SkillEditor_Plus.Factory
         {
             // Debug.Log("保存");
             //遍历asset的轨道
+            //结尾最远的Clip
+            int maxFar = 0;
             for (int i = 0; i < asset.Tracks.Count; i++)
             {
                 var track = asset.Tracks[i];
+                if(track.Clips.Count == 0) continue;
                 //为clip按照startID排序
                 track.Clips.Sort((StandardClip x, StandardClip y) =>
                 {
                     if (x.StartID > y.StartID) return 1;
                     else return -1;
                 });
+                maxFar = Mathf.Max(maxFar, track.Clips.Last().StartID + track.Clips.Last().Duration);
             }
 
+            //时间轴的总体时长
+            asset.Duration = maxFar;
+            // Debug.Log(maxFar);
+            
             //序列化timeline
             BinaryFormatter formatter = new BinaryFormatter();
             byte[] binaryData;

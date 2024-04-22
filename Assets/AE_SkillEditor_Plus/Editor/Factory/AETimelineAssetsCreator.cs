@@ -45,36 +45,7 @@ namespace AE_SkillEditor_Plus.Factory
         public override void Action(int instanceId, string pathName, string resourceFile)
         {
             // Debug.Log(pathName + " " + resourceFile);
-            var asset = new AETimelineAsset()
-            {
-                Tracks = new List<StandardTrack>()
-                {
-                    new TestTrackData()
-                    {
-                        Clips = new List<StandardClip>()
-                        {
-                            new TestClipData()
-                            {
-                                Name = "测试Clip",
-                                StartID = 100,
-                                Duration = 100
-                            }
-                        }
-                    },
-                    new TestTrackData()
-                    {
-                        Clips = new List<StandardClip>()
-                        {
-                            new TestClipData()
-                            {
-                                Name = "测试Clip",
-                                StartID = 100,
-                                Duration = 100
-                            }
-                        }
-                    }
-                }
-            };
+            var asset = new AETimelineAsset();
             //序列化新的timeline
             BinaryFormatter formatter = new BinaryFormatter();
             byte[] binaryData;

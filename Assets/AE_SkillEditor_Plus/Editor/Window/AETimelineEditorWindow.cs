@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using AE_SkillEditor_Plus.Editor.UI.Controller;
 using AE_SkillEditor_Plus.AEUIEvent;
+using AE_SkillEditor_Plus.Editor.Driver;
 using AE_SkillEditor_Plus.Factory;
 using AE_SkillEditor_Plus.RunTime;
 using AE_SkillEditor_Plus.RunTime.Attribute;
@@ -238,6 +239,12 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private void Update()
         {
             if (!IsPlaying) return;
+            if (CurrentFrameID > Asset.Duration)
+            {
+                IsPlaying = false;
+                return;
+            }
+
             OneFrameTimer -= 1f / FPS;
             if (OneFrameTimer <= 0)
             {
@@ -251,6 +258,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         {
             // Debug.Log(UnityEngine.Event.current.mousePosition.x);
             // Debug.Log(currentFrameID);
+            AETimelineEditorTick.Tick(CurrentFrameID, FPS);
         }
 
         #region 事件处理
@@ -356,7 +364,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     break;
                 case ControllerType.ToMostEnd:
                     //TODO:未完成
-                    CurrentFrameID += 1;
+                    CurrentFrameID = Asset.Duration;
                     break;
             }
         }

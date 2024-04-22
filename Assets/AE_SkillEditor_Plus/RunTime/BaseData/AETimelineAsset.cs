@@ -10,6 +10,7 @@ namespace AE_SkillEditor_Plus.RunTime
     {
         public string Name;
         public List<StandardTrack> Tracks;
+        public int Duration;
 
         public AETimelineAsset()
         {
