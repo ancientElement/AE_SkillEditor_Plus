@@ -18,6 +18,7 @@ namespace AE_SkillEditor_Plus.Factory
     {
         public static AETimelineAsset LoadTimeLineAsset(string path)
         {
+            //TODO: 序列化形式
             //从path加载二进制文件
             byte[] binaryData = File.ReadAllBytes(path);
             //将二进制文件反序列化为AETimelineAsset
@@ -27,6 +28,10 @@ namespace AE_SkillEditor_Plus.Factory
                 AETimelineAsset timelineAsset = formatter.Deserialize(stream) as AETimelineAsset;
                 return timelineAsset;
             }
+            // // 从对应地址加载ScriptableObject 
+            // {
+            //     return AssetDatabase.LoadAssetAtPath<AETimelineAsset>(path);
+            // }
         }
 
         public static void CreatTrack(AETimelineAsset asset, string path, int trackIndex, StandardTrack track)
@@ -42,7 +47,7 @@ namespace AE_SkillEditor_Plus.Factory
             Save(asset, path);
         }
 
-        public static void AddClip(AETimelineAsset asset, string path, int trackIndex, int startIndex)
+        public static void CreateClip(AETimelineAsset asset, string path, int trackIndex, int startIndex)
         {
             var clip = Activator.CreateInstance(asset.Tracks[trackIndex].GetType()
                 .GetCustomAttribute<AEBindClipAttribute>().ClipType) as StandardClip;
@@ -112,27 +117,40 @@ namespace AE_SkillEditor_Plus.Factory
 
         public static StandardClip CopyClip(AETimelineAsset asset, int trackIndex, int clipIndex)
         {
-            var clip = asset.Tracks[trackIndex].Clips[clipIndex];
-            return CopyClip(asset, clip);
-        }
-
-        public static StandardClip CopyClip(AETimelineAsset asset, StandardClip clip)
-        {
-            StandardClip newTrack;
-            BinaryFormatter formatter = new BinaryFormatter();
-            byte[] binaryData;
-            using (MemoryStream stream = new MemoryStream())
+            StandardClip clip, newClip;
             {
-                formatter.Serialize(stream, clip);
-                binaryData = stream.ToArray();
-            }
+                clip = asset.Tracks[trackIndex].Clips[clipIndex];
 
-            using (MemoryStream stream = new MemoryStream(binaryData))
+                BinaryFormatter formatter = new BinaryFormatter();
+                byte[] binaryData;
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    formatter.Serialize(stream, clip);
+                    binaryData = stream.ToArray();
+                }
+
+                using (MemoryStream stream = new MemoryStream(binaryData))
+                {
+                    newClip = formatter.Deserialize(stream) as StandardClip;
+                }
+            }
             {
-                newTrack = formatter.Deserialize(stream) as StandardClip;
+                // //复制资源
+                // var path = AssetDatabase.GetAssetPath(asset);
+                // //创建临时文件夹
+                // var folderPath = Application.dataPath + "/TempAETimelineCopy";
+                // if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
+                // //拷贝
+                // var des = "Assets/TempAETimelineCopy/" + path.Split("/").Last();
+                // FileUtil.CopyFileOrDirectory(path, des);
+                // //加载
+                // var tempAsset = AssetDatabase.LoadAssetAtPath<AETimelineAsset>(des);
+                // //赋值
+                // newClip = tempAsset.Tracks[trackIndex].Clips[clipIndex];
+                // //销毁
+                // FileUtil.DeleteFileOrDirectory("Assets/TempAETimelineCopy/");
             }
-
-            return newTrack;
+            return newClip;
         }
 
         public static void RemoveClip(AETimelineAsset asset, string path, int trackIndex, int clipIndex)
@@ -239,7 +257,7 @@ namespace AE_SkillEditor_Plus.Factory
             for (int i = 0; i < asset.Tracks.Count; i++)
             {
                 var track = asset.Tracks[i];
-                if(track.Clips.Count == 0) continue;
+                if (track.Clips.Count == 0) continue;
                 //为clip按照startID排序
                 track.Clips.Sort((StandardClip x, StandardClip y) =>
                 {
@@ -255,18 +273,24 @@ namespace AE_SkillEditor_Plus.Factory
 
             //重新生成
             AETimelineEditorTick.PlayAsset(asset);
-            
-            //序列化timeline
-            BinaryFormatter formatter = new BinaryFormatter();
-            byte[] binaryData;
-            using (MemoryStream stream = new MemoryStream())
+            //TODO: 序列化形式
             {
-                formatter.Serialize(stream, asset);
-                binaryData = stream.ToArray();
-            }
+                //序列化timeline
+                BinaryFormatter formatter = new BinaryFormatter();
+                byte[] binaryData;
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    formatter.Serialize(stream, asset);
+                    binaryData = stream.ToArray();
+                }
 
-            //保存到成为二进制文件
-            File.WriteAllBytes(path, binaryData);
+                //保存到成为二进制文件
+                File.WriteAllBytes(path, binaryData);
+            }
+            // {
+            //     EditorUtility.SetDirty(asset);
+            //     AssetDatabase.SaveAssets();
+            // }
         }
     }
 }

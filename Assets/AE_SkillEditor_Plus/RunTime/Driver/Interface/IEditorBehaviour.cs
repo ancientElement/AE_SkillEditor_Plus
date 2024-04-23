@@ -5,6 +5,6 @@ namespace AE_SkillEditor_Plus.RunTime.Interface
 {
     public interface IEditorBehaviour
     {
-        public AEPlayableBehavior CreateEditorBehaviour(StandardClip clip);
+        public AEPlayableBehaviour CreateEditorBehaviour(StandardClip clip);
     }
 }

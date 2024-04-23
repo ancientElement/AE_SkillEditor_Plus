@@ -41,32 +41,43 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
                 menu.ShowAsContext();
             }
 
+            //TODO: 序列化形式
             //绘制ObjectFIled
             var objectFiledRect = new Rect(FPSWidth + rect.x, rect.y, rect.width - FPSWidth, topHeight);
-            //绘制一个灰色的box lable为 点击选择文件
-            if (GUI.Button(objectFiledRect, window.AssetPath.Split("/").Last().Split(".")[0], EditorStyles.popup))
-            {
-                //搜索文件
-                var res = AssetDatabase.FindAssets("glob:\"Assets/**/*.aetimeline\"",
-                    new string[] { "Assets" });
-                var paths = new List<string>();
-                foreach (var VAR in res)
-                {
-                    var path = AssetDatabase.GUIDToAssetPath(VAR);
-                    paths.Add(path);
-                    // Debug.Log(path);
-                }
+            // //绘制一个灰色的box lable为 点击选择文件
+            // {
+            //     var tempObj = EditorGUI.ObjectField(objectFiledRect, window.Asset, typeof(AETimelineAsset), false);
+            //     if (tempObj != window.Asset)
+            //     {
+            //         window.AssetPath = AssetDatabase.GetAssetPath(tempObj);
+            //     }
+            // }
 
-                //弹出窗口
-                var searchWindow = ScriptableObject.CreateInstance<AETimelineSearchWindow>();
-                searchWindow.paths = paths;
-                //回调点击文件
-                searchWindow.Callbakc = s => window.AssetPath = s;
-                //打开窗口
-                SearchWindow.Open(
-                    new SearchWindowContext(GUIUtility.GUIToScreenPoint(UnityEngine.Event.current.mousePosition)),
-                    searchWindow
-                );
+            {
+                if (GUI.Button(objectFiledRect, window.AssetPath.Split("/").Last().Split(".")[0], EditorStyles.popup))
+                {
+                    //搜索文件
+                    var res = AssetDatabase.FindAssets("glob:\"Assets/**/*.aetimeline\"",
+                        new string[] { "Assets" });
+                    var paths = new List<string>();
+                    foreach (var VAR in res)
+                    {
+                        var path = AssetDatabase.GUIDToAssetPath(VAR);
+                        paths.Add(path);
+                        // Debug.Log(path);
+                    }
+            
+                    //弹出窗口
+                    var searchWindow = ScriptableObject.CreateInstance<AETimelineSearchWindow>();
+                    searchWindow.paths = paths;
+                    //回调点击文件
+                    searchWindow.Callbakc = s => window.AssetPath = s;
+                    //打开窗口
+                    SearchWindow.Open(
+                        new SearchWindowContext(GUIUtility.GUIToScreenPoint(UnityEngine.Event.current.mousePosition)),
+                        searchWindow
+                    );
+                }
             }
 
             //绘制控件

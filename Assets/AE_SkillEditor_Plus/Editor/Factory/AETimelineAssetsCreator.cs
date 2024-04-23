@@ -11,6 +11,8 @@ namespace AE_SkillEditor_Plus.Factory
 {
     public static class AETimelineAssetsCreator
     {
+        //TODO: 序列化形式
+        // public const string SUFFIX = "asset";
         public const string SUFFIX = "aetimeline";
 
         [MenuItem("Assets/Create/AETimeline编辑器/AETimelineAsset")]
@@ -44,19 +46,8 @@ namespace AE_SkillEditor_Plus.Factory
         //按回车执行Action方法
         public override void Action(int instanceId, string pathName, string resourceFile)
         {
-            // Debug.Log(pathName + " " + resourceFile);
             var asset = new AETimelineAsset();
-            //序列化新的timeline
-            BinaryFormatter formatter = new BinaryFormatter();
-            byte[] binaryData;
-            using (MemoryStream stream = new MemoryStream())
-            {
-                formatter.Serialize(stream, asset);
-                binaryData = stream.ToArray();
-            }
-
-            //保存到成为二进制文件
-            File.WriteAllBytes(pathName, binaryData);
+            AETimelineFactory.Save(asset,pathName);
             //TODO:设置文件的图标 为内置图标light
             // Texture2D icon = EditorGUIUtility.IconContent("Light Icon").image as Texture2D;
             //刷新

@@ -3,27 +3,27 @@ using UnityEngine;
 
 namespace AE_SkillEditor_Plus.RunTime.Driver
 {
-    public class AEPlayableBehavior
+    public class AEPlayableBehaviour
     {
         public AEPlayableStateEnum State { get; protected set; }
 
-        public AEPlayableBehavior(StandardClip clip)
+        public AEPlayableBehaviour(StandardClip clip)
         {
         }
 
-        public void OnEnter()
+        public virtual void OnEnter()
         {
             State = AEPlayableStateEnum.Running;
             // Debug.LogWarning("OnEnter");
         }
 
-        public void Tick(int currentFrameID, int fps)
+        public virtual void Tick(int currentFrameID, int fps)
         {
             if (State != AEPlayableStateEnum.Running) return;
             // Debug.Log("OnUpdate  "  + currentFrameID);
         }
 
-        public void OnExit()
+        public virtual void OnExit()
         {
             State = AEPlayableStateEnum.Exit;
             // Debug.LogWarning("OnExit");

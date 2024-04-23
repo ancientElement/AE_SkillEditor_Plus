@@ -4,6 +4,7 @@ using System.Reflection;
 using AE_SkillEditor_Plus.Editor.UI.Controller;
 using AE_SkillEditor_Plus.AEUIEvent;
 using AE_SkillEditor_Plus.Editor.Driver;
+using AE_SkillEditor_Plus.Editor.Inspector;
 using AE_SkillEditor_Plus.Factory;
 using AE_SkillEditor_Plus.RunTime;
 using AE_SkillEditor_Plus.RunTime.Attribute;
@@ -65,8 +66,9 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 CurrentFrameIDChange();
             }
         } //当前帧
-
-        private StandardClip tempObject; //临时的一个变量 保存CtrlC的数据
+        
+        private int[] tempClipIndex = { -1, -1 }; //临时的一个变量 保存CtrlC的数据
+        // private StandardClip tempObject; //临时的一个变量 保存CtrlC的数据
 
         public int MouseCurrentFrameID //鼠标位置转化为FrameID
             => (int)((UnityEngine.Event.current.mousePosition.x - HeadWidth) / WidthPreFrame);
@@ -77,7 +79,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         public int FPS = 60; //帧率
         private float OneFrameTimer; //一帧时长的计时器
 
-        private AETimelineAsset Asset;
+        public AETimelineAsset Asset { get; private set; }
         private string assetPath = "";
 
         public string AssetPath
@@ -101,7 +103,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         {
             EventCenter.AddEventListener(this, ProcessEvent);
             if (AssetPath != "") Asset = AETimelineFactory.LoadTimeLineAsset(AssetPath);
-            AETimelineEditorTick.PlayAsset(Asset);
+            if (Asset != null) AETimelineEditorTick.PlayAsset(Asset);
         }
 
         //销毁
@@ -161,7 +163,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
             var timelineRect = new Rect(rightRect.x, rightRect.y, rightRect.width, ControllerHeight);
 
             // 事件添加轨道
-            if (leftRect.Contains(UnityEngine.Event.current.mousePosition) &&
+            if (Asset != null && leftRect.Contains(UnityEngine.Event.current.mousePosition) &&
                 UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown &&
                 UnityEngine.Event.current.button == 1)
             {
@@ -393,7 +395,6 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     CurrentFrameID += 1;
                     break;
                 case ControllerType.ToMostEnd:
-                    //TODO:未完成
                     CurrentFrameID = Asset.Duration;
                     break;
             }
@@ -403,6 +404,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private void ClipClick(ClipClickEvent click)
         {
             // Debug.Log("选中 " + click.TrackIndex + " " + click.ClipIndex);
+            AETimelineInspector.ShowInspector(this,Asset.Tracks[click.TrackIndex].Clips[click.ClipIndex]);
             HighLight[0] = click.TrackIndex;
             HighLight[1] = click.ClipIndex;
             Repaint();
@@ -438,18 +440,22 @@ namespace AE_SkillEditor_Plus.Editor.Window
             switch (keyborad.Shortcut)
             {
                 case Shortcut.CtrlC:
-                    tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
+                    tempClipIndex[0] = keyborad.TrackIndex;
+                    tempClipIndex[1] = keyborad.ClipIndex;
                     break;
                 case Shortcut.CtrlV:
-                    var temp = AETimelineFactory.CopyClip(Asset, tempObject);
+                    var temp = AETimelineFactory.CopyClip(Asset,  tempClipIndex[0], tempClipIndex[1]);
                     AETimelineFactory.AddClip(Asset, AssetPath, keyborad.TrackIndex, MouseCurrentFrameID, temp);
                     break;
-                case Shortcut.CtrlX:
-                    tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
-                    AETimelineFactory.RemoveClip(Asset, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
-                    HighLight[0] = -1;
-                    HighLight[1] = -1;
-                    break;
+                //TODO:未实现
+                // case Shortcut.CtrlX:
+                //     tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
+                //     // tempClipIndex[0] = keyborad.TrackIndex;
+                //     // tempClipIndex[1] = keyborad.ClipIndex;
+                //     AETimelineFactory.RemoveClip(Asset, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
+                //     HighLight[0] = -1;
+                //     HighLight[1] = -1;
+                //     break;
                 case Shortcut.Delete:
                     AETimelineFactory.RemoveClip(Asset, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
                     HighLight[0] = -1;
@@ -502,7 +508,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
             GenericMenu menu = new GenericMenu();
             // 添加添加Clip
             menu.AddItem(new GUIContent("添加Clip"), false,
-                () => { AETimelineFactory.AddClip(Asset, AssetPath, click.TrackIndex, click.MouseFrameID); });
+                () => { AETimelineFactory.CreateClip(Asset, AssetPath, click.TrackIndex, click.MouseFrameID); });
             // 显示菜单
             menu.ShowAsContext();
         }

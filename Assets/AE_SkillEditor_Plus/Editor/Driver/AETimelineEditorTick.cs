@@ -9,18 +9,18 @@ namespace AE_SkillEditor_Plus.Editor.Driver
 {
     internal static class AETimelineEditorTick
     {
-        private static List<List<AEPlayableBehavior>> Behaviors;
+        private static List<List<AEPlayableBehaviour>> Behaviors;
         private static AETimelineAsset m_asset;
 
         public static void PlayAsset(AETimelineAsset asset)
         {
-            Debug.Log("VAR");
+            // Debug.Log("VAR");
             m_asset = asset;
-            Behaviors = new List<List<AEPlayableBehavior>>();
+            Behaviors = new List<List<AEPlayableBehaviour>>();
             for (var trackIndex = 0; trackIndex < m_asset.Tracks.Count; trackIndex++)
             {
                 var track = m_asset.Tracks[trackIndex];
-                Behaviors.Add(new List<AEPlayableBehavior>());
+                Behaviors.Add(new List<AEPlayableBehaviour>());
                 for (var clipIndex = 0; clipIndex < track.Clips.Count; clipIndex++)
                 {
                     var clip = track.Clips[clipIndex];
