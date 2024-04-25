@@ -14,6 +14,7 @@ using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 namespace AE_SkillEditor_Plus.Editor.Window
@@ -67,8 +68,8 @@ namespace AE_SkillEditor_Plus.Editor.Window
             }
         } //当前帧
         
-        private int[] tempClipIndex = { -1, -1 }; //临时的一个变量 保存CtrlC的数据
-        // private StandardClip tempObject; //临时的一个变量 保存CtrlC的数据
+        // private int[] tempClipIndex = { -1, -1 }; //临时的一个变量 保存CtrlC的数据
+        private StandardClip tempObject; //临时的一个变量 保存CtrlC的数据
 
         public int MouseCurrentFrameID //鼠标位置转化为FrameID
             => (int)((UnityEngine.Event.current.mousePosition.x - HeadWidth) / WidthPreFrame);
@@ -440,22 +441,25 @@ namespace AE_SkillEditor_Plus.Editor.Window
             switch (keyborad.Shortcut)
             {
                 case Shortcut.CtrlC:
-                    tempClipIndex[0] = keyborad.TrackIndex;
-                    tempClipIndex[1] = keyborad.ClipIndex;
+                    // tempClipIndex[0] = keyborad.TrackIndex;
+                    // tempClipIndex[1] = keyborad.ClipIndex;
+                    tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
                     break;
                 case Shortcut.CtrlV:
-                    var temp = AETimelineFactory.CopyClip(Asset,  tempClipIndex[0], tempClipIndex[1]);
-                    AETimelineFactory.AddClip(Asset, AssetPath, keyborad.TrackIndex, MouseCurrentFrameID, temp);
+                    // var temp = AETimelineFactory.CopyClip(Asset,  tempClipIndex[0], tempClipIndex[1]);
+                    // tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
+                    tempObject = Object.Instantiate(tempObject);
+                    AETimelineFactory.AddClip(Asset, AssetPath, keyborad.TrackIndex, MouseCurrentFrameID, tempObject);
                     break;
                 //TODO:未实现
-                // case Shortcut.CtrlX:
-                //     tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
-                //     // tempClipIndex[0] = keyborad.TrackIndex;
-                //     // tempClipIndex[1] = keyborad.ClipIndex;
-                //     AETimelineFactory.RemoveClip(Asset, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
-                //     HighLight[0] = -1;
-                //     HighLight[1] = -1;
-                //     break;
+                case Shortcut.CtrlX:
+                    tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
+                    // tempClipIndex[0] = keyborad.TrackIndex;
+                    // tempClipIndex[1] = keyborad.ClipIndex;
+                    AETimelineFactory.RemoveClip(Asset, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
+                    HighLight[0] = -1;
+                    HighLight[1] = -1;
+                    break;
                 case Shortcut.Delete:
                     AETimelineFactory.RemoveClip(Asset, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
                     HighLight[0] = -1;
@@ -494,9 +498,9 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 {
                     if (type.IsSubclassOf(typeof(StandardTrack)))
                     {
-                        var obj = Activator.CreateInstance(type) as StandardTrack;
+                        // var obj = Activator.CreateInstance(type) as StandardTrack;
                         menu.AddItem(new GUIContent("添加轨道/" + type.Name), false,
-                            () => { AETimelineFactory.CreatTrack(Asset, AssetPath, trackIndex, obj); });
+                            () => { AETimelineFactory.CreatTrack(Asset, AssetPath, trackIndex, type); });
                     }
                 }
             }

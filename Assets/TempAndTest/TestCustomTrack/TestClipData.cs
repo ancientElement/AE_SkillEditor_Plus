@@ -26,6 +26,7 @@ namespace AE_SkillEditor_Plus.TempAndTest.TestData
     {
         public string Str;
         public string aniationName;
+        public AnimationClip aniationClip;
     }
 
     public class TestBehaviour : AEPlayableBehaviour //测试Behaviour

@@ -12,8 +12,8 @@ namespace AE_SkillEditor_Plus.Factory
     public static class AETimelineAssetsCreator
     {
         //TODO: 序列化形式
-        // public const string SUFFIX = "asset";
-        public const string SUFFIX = "aetimeline";
+        public const string SUFFIX = "asset";
+        // public const string SUFFIX = "aetimeline";
 
         [MenuItem("Assets/Create/AETimeline编辑器/AETimelineAsset")]
         private static void CreatoFile()
@@ -46,8 +46,11 @@ namespace AE_SkillEditor_Plus.Factory
         //按回车执行Action方法
         public override void Action(int instanceId, string pathName, string resourceFile)
         {
-            var asset = new AETimelineAsset();
-            AETimelineFactory.Save(asset,pathName);
+            //TODO: 序列化形式
+            // var asset = new AETimelineAsset();
+            var asset = ScriptableObject.CreateInstance<AETimelineAsset>();
+            // AETimelineFactory.Save(asset,pathName);
+            AssetDatabase.CreateAsset(asset,pathName);
             //TODO:设置文件的图标 为内置图标light
             // Texture2D icon = EditorGUIUtility.IconContent("Light Icon").image as Texture2D;
             //刷新

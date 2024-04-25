@@ -6,11 +6,10 @@ using UnityEngine;
 namespace AE_SkillEditor_Plus.RunTime
 {
     [Serializable] //TODO: 序列化形式
-    public class AETimelineAsset //: ScriptableObject
+    public class AETimelineAsset : ScriptableObject
     {
-        public string Name;
-        [SerializeReference] 
-        public List<StandardTrack> Tracks;
+        // public string Name;
+        [SerializeReference] public List<StandardTrack> Tracks;
         public int Duration;
 
         public AETimelineAsset()

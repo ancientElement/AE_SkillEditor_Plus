@@ -5,10 +5,10 @@ using UnityEngine;
 namespace AE_SkillEditor_Plus.RunTime
 {
     [Serializable]
-    public class StandardTrack
+    //TODO:修改为ScriptableObject嵌套
+    public class StandardTrack //: ScriptableObject
     {
-        [SerializeReference] 
-        public List<StandardClip> Clips;
+        [SerializeReference] public List<StandardClip> Clips;
 
         public StandardTrack()
         {
