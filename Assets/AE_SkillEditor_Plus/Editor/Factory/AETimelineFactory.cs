@@ -38,11 +38,11 @@ namespace AE_SkillEditor_Plus.Factory
         public static void CreatTrack(AETimelineAsset asset, string path, int trackIndex, Type type)
         {
             //TODO:修改为ScriptableObject嵌套
-            Debug.Log(type);
+            // Debug.Log(type);
             // var track = ScriptableObject.CreateInstance(type) as StandardTrack;
             var track = Activator.CreateInstance(type) as StandardTrack;
             // Debug.Log("在第"+trackIndex+"创建了轨道");
-            
+
             asset.Tracks.Insert(trackIndex, track);
             Save(asset, path);
         }
@@ -58,8 +58,8 @@ namespace AE_SkillEditor_Plus.Factory
             //TODO:修改为ScriptableObject嵌套
             // var clip = Activator.CreateInstance(asset.Tracks[trackIndex].GetType()
             // .GetCustomAttribute<AEBindClipAttribute>().ClipType) as StandardClip;
-            var clip = ScriptableObject.CreateInstance(asset.Tracks[trackIndex].GetType()
-                .GetCustomAttribute<AEBindClipAttribute>().ClipType) as StandardClip;
+            var type = asset.Tracks[trackIndex].GetType().GetCustomAttribute<AEBindClipAttribute>().ClipType;
+            var clip = ScriptableObject.CreateInstance(type) as StandardClip;
             clip.StartID = startIndex;
             clip.Duration = 100;
             clip.Name = clip.GetType().Name;
@@ -120,8 +120,8 @@ namespace AE_SkillEditor_Plus.Factory
                 }
             }
 
-            asset.Tracks[trackIndex].Clips.Add(clip);
             AssetDatabase.AddObjectToAsset(clip, asset);
+            asset.Tracks[trackIndex].Clips.Add(clip);
             Save(asset, path);
         }
 
@@ -176,7 +176,6 @@ namespace AE_SkillEditor_Plus.Factory
             AssetDatabase.RemoveObjectFromAsset(asset.Tracks[trackIndex].Clips[clipIndex]);
             asset.Tracks[trackIndex].Clips.RemoveAt(clipIndex);
             Save(asset, path);
-            
         }
 
         public static void ResizeClip(AETimelineAsset asset, int trackIndex, int clipIndex, int target)

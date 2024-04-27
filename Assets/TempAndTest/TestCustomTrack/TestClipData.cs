@@ -16,11 +16,11 @@ namespace AE_SkillEditor_Plus.TempAndTest.TestData
     {
         public AEPlayableBehaviour CreateEditorBehaviour(StandardClip clip)
             => new TestBehaviour(clip);
-
+    
         public AEPlayableBehaviour CreateRuntimeBehaviour(StandardClip clip)
             => new TestBehaviour(clip);
     }
-
+    
     [Serializable]
     public class TestClipData : StandardClip //测试Clip
     {
@@ -28,28 +28,28 @@ namespace AE_SkillEditor_Plus.TempAndTest.TestData
         public string aniationName;
         public AnimationClip aniationClip;
     }
-
+    
     public class TestBehaviour : AEPlayableBehaviour //测试Behaviour
     {
         public TestBehaviour(StandardClip clip) : base(clip)
         {
         }
-
-        public override void OnEnter() //进入
+    
+        public override void OnEnter(GameObject context) //进入
         {
-            base.OnEnter();
+            base.OnEnter(context);
             Debug.LogWarning("OnEnter");
         }
-
-        public override void Tick(int currentFrameID, int fps) //Running
+    
+        public override void Tick(int currentFrameID, int fps,GameObject context) //Running
         {
-            base.Tick(currentFrameID, fps);
+            base.Tick(currentFrameID, fps,context);
             Debug.Log("OnUpdate  " + currentFrameID);
         }
-
-        public override void OnExit() //退出
+    
+        public override void OnExit(GameObject context) //退出
         {
-            base.OnExit();
+            base.OnExit(context);
             Debug.LogWarning("OnExit");
         }
     }

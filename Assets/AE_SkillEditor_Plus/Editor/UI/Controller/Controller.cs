@@ -27,7 +27,7 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
             rect = new Rect(rect.x + 10f, rect.y, rect.width - 20f, rect.height);
             float topHeight = rect.height * 0.5f;
             //绘制帧率
-            float FPSWidth = rect.width / 3;
+            float FPSWidth = rect.width / 4;
             var FPSRect = new Rect(rect.x, rect.y, FPSWidth, topHeight);
             if (GUI.Button(FPSRect, window.FPS + "帧", EditorStyles.popup))
             {
@@ -41,9 +41,21 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
                 menu.ShowAsContext();
             }
 
+            float rectX = rect.x + FPSWidth;
+
+            //绘制ObjectFIled
+            float contextObjectWidth = rect.width / 4;
+            var contextObject = new Rect(rectX, rect.y, contextObjectWidth, topHeight);
+            //绘制一个灰色的box lable为 点击选择文件
+            {
+                window.Context =
+                    EditorGUI.ObjectField(contextObject, window.Context, typeof(GameObject), true) as GameObject;
+            }
+            rectX += contextObjectWidth;
+
             //TODO: 序列化形式
             //绘制ObjectFIled
-            var objectFiledRect = new Rect(FPSWidth + rect.x, rect.y, rect.width - FPSWidth, topHeight);
+            var objectFiledRect = new Rect(rectX, rect.y, rect.width - FPSWidth - contextObjectWidth, topHeight);
             //绘制一个灰色的box lable为 点击选择文件
             {
                 var tempObj = EditorGUI.ObjectField(objectFiledRect, window.Asset, typeof(AETimelineAsset), false);

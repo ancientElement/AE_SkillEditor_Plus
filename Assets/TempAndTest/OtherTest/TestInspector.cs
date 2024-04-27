@@ -7,6 +7,6 @@ using UnityEngine;
 
 public class TestInspector : MonoBehaviour
 {
-    [SerializeReference] //加上这个标签就可以了
-    public StandardClip Father = new TestClipData();
+    // [SerializeReference] //加上这个标签就可以了
+    // public StandardClip Father = new TestClipData();
 }

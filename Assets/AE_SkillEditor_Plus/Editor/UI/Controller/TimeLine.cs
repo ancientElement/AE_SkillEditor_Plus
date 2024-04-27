@@ -1,5 +1,6 @@
 ﻿using AE_SkillEditor_Plus.Editor.Window;
 using AE_SkillEditor_Plus.AEUIEvent;
+using AE_SkillEditor_Plus.UI;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,8 +10,9 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
     {
         private static TimelineScaleEvent scaleEvent;
         private static TimelineDragEvent dragEvent;
+
         const float oneNumWidth = 7.5f; //一个数字的宽度
-        // private static bool leftMouseDown;
+        public static bool leftMouseDown;
 
         static TimeLine()
         {
@@ -88,23 +90,25 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
 
         private static void ProcessEvent(AETimelineEditorWindow window, Rect rect)
         {
-            // if (rect.Contains(UnityEngine.Event.current.mousePosition) &&
-            //     UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown &&
-            //     UnityEngine.Event.current.button == 0)
-            // {
-            //     EventCenter.TrigerEvent(window, dragEvent);
-            //     leftMouseDown = true;
-            // }
-            //
+            if (rect.Contains(UnityEngine.Event.current.mousePosition) &&
+                UnityEngine.Event.current.type == UnityEngine.EventType.MouseDown &&
+                UnityEngine.Event.current.button == 0)
+            {
+                EventCenter.TrigerEvent(window, dragEvent);
+                leftMouseDown = true;
+            }
+            
             if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseUp &&
                 UnityEngine.Event.current.button == 0)
             {
-                // leftMouseDown = false;
+                leftMouseDown = false;
                 EventCenter.TrigerEvent(window, new TimelineDragEndEvent());
-                // Debug.Log("leftMouseDown");
+                Debug.Log("TimelineDragUp");
+                //TODO:临时这样写
+                TrackClipStyle.moveEventMouseDown = false;
             }
 
-            if (rect.Contains(UnityEngine.Event.current.mousePosition) &&
+            if (leftMouseDown &&
                 UnityEngine.Event.current.type == UnityEngine.EventType.MouseDrag &&
                 UnityEngine.Event.current.button == 0)
             {
@@ -115,7 +119,7 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
                 UnityEngine.Event.current.type == UnityEngine.EventType.ScrollWheel)
             {
                 EventCenter.TrigerEvent(window, scaleEvent);
-                UnityEngine.Event.current.Use();
+                // UnityEngine.Event.current.Use();
             }
         }
     }

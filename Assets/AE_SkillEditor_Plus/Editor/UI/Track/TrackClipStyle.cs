@@ -1,6 +1,7 @@
 ﻿using System;
 using AE_SkillEditor_Plus.Editor.Window;
 using AE_SkillEditor_Plus.AEUIEvent;
+using AE_SkillEditor_Plus.Editor.UI.Controller;
 using AE_SkillEditor_Plus.UI.Data;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -14,7 +15,7 @@ namespace AE_SkillEditor_Plus.UI
     {
         private const float tailWdithPersent = 0.1f;
 
-        private static bool moveEventMouseDown;
+        public static bool moveEventMouseDown;
         private static bool resizeEventMouseDown;
         private static ClipEvent mouseEvent;
         private static KeyboradEvent keyboradEvent;
@@ -35,7 +36,7 @@ namespace AE_SkillEditor_Plus.UI
                 color);
             ProcessEvent(window, rect, trackIndex, clipIndex);
             //绘制名称
-            GUI.contentColor  = Color.white;
+            GUI.contentColor = Color.white;
             GUI.Label(rect, Name, "Box");
 
             //边框
@@ -96,6 +97,9 @@ namespace AE_SkillEditor_Plus.UI
                     EventCenter.TrigerEvent(window,
                         new ClipResizeEndEvent() { TrackIndex = trackIndex, ClipIndex = clipIndex });
                 moveEventMouseDown = false;
+                //TODO:临时这样写
+                TimeLine.leftMouseDown = false;
+                // Debug.Log("moveEventMouseUp");
             }
 
             //左键拖动
@@ -104,6 +108,7 @@ namespace AE_SkillEditor_Plus.UI
                 UnityEngine.Event.current.button == 0)
             {
                 EventCenter.TrigerEvent(window, mouseEvent);
+                
             }
 
             //----监听尾部大小重置----

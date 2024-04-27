@@ -18,7 +18,7 @@ namespace TempAndTest.TestInspector
                 if (_instance == null)
                 {
                     _instance = CreateInstance<TestSOInspector>();
-                    _instance.Clip = new TestClipData();
+                    // _instance.Clip = new TestClipData();
                 }
 
                 return _instance;

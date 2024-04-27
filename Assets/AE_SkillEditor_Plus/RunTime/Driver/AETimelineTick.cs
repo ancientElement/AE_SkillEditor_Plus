@@ -6,12 +6,16 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
 {
     public class AETimelineTick
     {
-        private  List<List<AEPlayableBehaviour>> Behaviors;
-        private  AETimelineAsset m_asset;
+        private List<List<AEPlayableBehaviour>> Behaviors;
+        private float Timer;
+        private int currentFrameID;
+        private AETimelineAsset m_asset;
 
-        public  void PlayAsset(AETimelineAsset asset)
+        public void PlayAsset(AETimelineAsset asset)
         {
             // Debug.Log("VAR");
+            Timer = 0;
+            currentFrameID = 0;
             m_asset = asset;
             Behaviors = new List<List<AEPlayableBehaviour>>();
             for (var trackIndex = 0; trackIndex < m_asset.Tracks.Count; trackIndex++)
@@ -26,9 +30,20 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
             }
         }
 
-        public  void Tick(int currentFrameID, int FPS)
+        public void Tick(float delta, int FPS,GameObject context)
         {
             if (Behaviors == null) return;
+            Timer += delta;
+            if (Timer >= 1 / FPS)
+            {
+                currentFrameID += 1;
+                Timer = 0;
+                TickPrivate(FPS,context);
+            }
+        }
+
+        private void TickPrivate(int FPS, GameObject context)
+        {
             if (currentFrameID > m_asset.Duration) return;
             for (var trackIndex = 0; trackIndex < m_asset.Tracks.Count; trackIndex++)
             {
@@ -43,17 +58,17 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
                         if (behavior.State == AEPlayableStateEnum.Exit)
                         {
                             // Debug.Log(clip.Name + "OnEnter");
-                            behavior.OnEnter();
+                            behavior.OnEnter(context);
                         }
 
-                        behavior.Tick(currentFrameID - clip.StartID, FPS);
+                        behavior.Tick(currentFrameID - clip.StartID, FPS,context);
                         // (track as ITrackEditorDriver)?.Tick((int)(currentFrameID * FPS), FPS, clip);
                         // Debug.Log(clip.Name + "Playing" + currentFrameID);
                     }
                     else if ((currentFrameID < clip.StartID || currentFrameID >= clip.StartID + clip.Duration) &&
                              behavior.State == AEPlayableStateEnum.Running)
                     {
-                        behavior.OnExit();
+                        behavior.OnExit(context);
                     }
                 }
             }

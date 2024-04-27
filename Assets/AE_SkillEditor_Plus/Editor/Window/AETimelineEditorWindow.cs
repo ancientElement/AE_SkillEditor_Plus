@@ -67,7 +67,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 CurrentFrameIDChange();
             }
         } //当前帧
-        
+
         // private int[] tempClipIndex = { -1, -1 }; //临时的一个变量 保存CtrlC的数据
         private StandardClip tempObject; //临时的一个变量 保存CtrlC的数据
 
@@ -98,6 +98,8 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private Vector2 ScrollPosHead;
         private Vector2 ScrollPosBody;
         private Vector2 ScrollPosTimeline;
+
+        public GameObject Context; //运行依附的游戏对象
 
         //初始化
         private void OnEnable()
@@ -278,7 +280,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
             if (Asset == null) return;
             // Debug.Log(UnityEngine.Event.current.mousePosition.x);
             // Debug.Log(currentFrameID);
-            AETimelineEditorTick.Tick(CurrentFrameID, FPS);
+            AETimelineEditorTick.Tick(CurrentFrameID, FPS, Context);
         }
 
         #region 事件处理
@@ -405,7 +407,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private void ClipClick(ClipClickEvent click)
         {
             // Debug.Log("选中 " + click.TrackIndex + " " + click.ClipIndex);
-            AETimelineInspector.ShowInspector(this,Asset.Tracks[click.TrackIndex].Clips[click.ClipIndex]);
+            AETimelineInspector.ShowInspector(this, Asset.Tracks[click.TrackIndex].Clips[click.ClipIndex]);
             HighLight[0] = click.TrackIndex;
             HighLight[1] = click.ClipIndex;
             Repaint();

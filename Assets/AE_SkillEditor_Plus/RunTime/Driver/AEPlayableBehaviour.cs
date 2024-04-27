@@ -11,19 +11,19 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
         {
         }
 
-        public virtual void OnEnter()
+        public virtual void OnEnter(GameObject context)
         {
             State = AEPlayableStateEnum.Running;
             // Debug.LogWarning("OnEnter");
         }
 
-        public virtual void Tick(int currentFrameID, int fps)
+        public virtual void Tick(int currentFrameID, int fps, GameObject context)
         {
-            if (State != AEPlayableStateEnum.Running) return;
+            // if (State != AEPlayableStateEnum.Running) return;
             // Debug.Log("OnUpdate  "  + currentFrameID);
         }
 
-        public virtual void OnExit()
+        public virtual void OnExit(GameObject context)
         {
             State = AEPlayableStateEnum.Exit;
             // Debug.LogWarning("OnExit");
