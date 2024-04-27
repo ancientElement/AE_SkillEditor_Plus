@@ -269,7 +269,7 @@ namespace AE_SkillEditor_Plus.Factory
 
         public static void Save(AETimelineAsset asset, string path)
         {
-            // Debug.Log("保存");
+            Debug.Log("保存");
             //遍历asset的轨道
             //结尾最远的Clip
             int maxFar = 0;

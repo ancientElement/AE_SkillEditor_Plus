@@ -30,7 +30,7 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
             }
         }
 
-        public void Tick(float delta, int FPS,GameObject context)
+        public void Tick(float delta, int FPS, GameObject context)
         {
             if (Behaviors == null) return;
             Timer += delta;
@@ -38,7 +38,7 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
             {
                 currentFrameID += 1;
                 Timer = 0;
-                TickPrivate(FPS,context);
+                TickPrivate(FPS, context);
             }
         }
 
@@ -58,17 +58,17 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
                         if (behavior.State == AEPlayableStateEnum.Exit)
                         {
                             // Debug.Log(clip.Name + "OnEnter");
-                            behavior.OnEnter(context);
+                            behavior.OnEnter(context, currentFrameID);
                         }
 
-                        behavior.Tick(currentFrameID - clip.StartID, FPS,context);
+                        behavior.Tick(currentFrameID - clip.StartID, FPS, context);
                         // (track as ITrackEditorDriver)?.Tick((int)(currentFrameID * FPS), FPS, clip);
                         // Debug.Log(clip.Name + "Playing" + currentFrameID);
                     }
                     else if ((currentFrameID < clip.StartID || currentFrameID >= clip.StartID + clip.Duration) &&
                              behavior.State == AEPlayableStateEnum.Running)
                     {
-                        behavior.OnExit(context);
+                        behavior.OnExit(context, currentFrameID);
                     }
                 }
             }

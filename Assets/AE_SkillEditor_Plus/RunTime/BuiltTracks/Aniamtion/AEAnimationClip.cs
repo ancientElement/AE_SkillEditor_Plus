@@ -7,5 +7,6 @@ namespace AE_SkillEditor_Plus.RunTime.BuiltTracks
     public class AEAnimationClip : StandardClip
     {
         public AnimationClip AnimationClip;
+        // public Vector3 StartPosition;
     }
 }

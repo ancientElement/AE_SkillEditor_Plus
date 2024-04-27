@@ -4,7 +4,7 @@
     {
         public ControllerEvent()
         {
-            this.AeuiEventType = AEUIEventType.Controller;
+            this.EventType = AEUIEventType.Controller;
         }
 
         public ControllerType ControllerType;

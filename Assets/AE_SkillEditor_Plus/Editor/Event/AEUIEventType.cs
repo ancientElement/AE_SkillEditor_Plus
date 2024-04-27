@@ -15,20 +15,21 @@
         TimelineDrag,
         HeadRightClick,
         BodyRightClick,
-        TimelineDragEnd
+        TimelineDragEnd,
+        LeftMouseUp
     }
-    
+
     //快捷键
-    public enum Shortcut 
+    public enum Shortcut
     {
         CtrlC,
         CtrlV,
         CtrlX,
         Delete
     }
-    
+
     //控件
-    public enum ControllerType 
+    public enum ControllerType
     {
         Play,
         ToPre,

@@ -2,6 +2,6 @@
 {
     public class BaseEvent
     {
-        public AEUIEventType AeuiEventType { get; protected set; }
+        public AEUIEventType EventType { get; protected set; }
     }
 }

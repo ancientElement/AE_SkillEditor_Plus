@@ -97,13 +97,15 @@ namespace AE_SkillEditor_Plus.Editor.UI.Controller
                 EventCenter.TrigerEvent(window, dragEvent);
                 leftMouseDown = true;
             }
-            
-            if (UnityEngine.Event.current.type == UnityEngine.EventType.MouseUp &&
-                UnityEngine.Event.current.button == 0)
+
+            Rect windowRect = new Rect(rect.x, 0, window.position.width-rect.x, window.position.height);
+            if ((UnityEngine.Event.current.type == UnityEngine.EventType.MouseUp &&
+                 UnityEngine.Event.current.button == 0) ||
+                !windowRect.Contains(UnityEngine.Event.current.mousePosition))
             {
                 leftMouseDown = false;
                 EventCenter.TrigerEvent(window, new TimelineDragEndEvent());
-                Debug.Log("TimelineDragUp");
+                // Debug.Log("TimelineDragUp");
                 //TODO:临时这样写
                 TrackClipStyle.moveEventMouseDown = false;
             }

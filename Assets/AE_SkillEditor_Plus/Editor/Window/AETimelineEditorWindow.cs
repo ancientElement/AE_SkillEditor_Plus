@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Security.Policy;
 using AE_SkillEditor_Plus.Editor.UI.Controller;
 using AE_SkillEditor_Plus.AEUIEvent;
 using AE_SkillEditor_Plus.Editor.Driver;
@@ -249,7 +250,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         {
             if (TargetFrameID != -1 && CurrentFrameID != TargetFrameID)
             {
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < Mathf.Abs(TargetFrameID - CurrentFrameID); i++)
                 {
                     if (TargetFrameID != -1 && CurrentFrameID != TargetFrameID)
                     {
@@ -266,10 +267,11 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 return;
             }
 
-            OneFrameTimer -= 1f / FPS;
+            OneFrameTimer -= Time.deltaTime;
             if (OneFrameTimer <= 0)
             {
                 OneFrameTimer = 1f / FPS;
+                Debug.Log(OneFrameTimer);
                 Tick(CurrentFrameID);
                 CurrentFrameID += 1;
             }
@@ -288,7 +290,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         //处理事件
         private void ProcessEvent(BaseEvent baseEvent)
         {
-            switch (baseEvent.AeuiEventType)
+            switch (baseEvent.EventType)
             {
                 //Clip事件
                 case AEUIEventType.ClipMove:

@@ -6,7 +6,7 @@
         public int MouseFrameID;
         public BodyRightClick()
         {
-            this.AeuiEventType = AEUIEventType.BodyRightClick;
+            this.EventType = AEUIEventType.BodyRightClick;
         }
     }
 }

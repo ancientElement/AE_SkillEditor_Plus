@@ -6,7 +6,7 @@
         
         public HeadRightClickEvent()
         {
-            AeuiEventType = AEUIEventType.HeadRightClick;
+            EventType = AEUIEventType.HeadRightClick;
         }
     }
 }

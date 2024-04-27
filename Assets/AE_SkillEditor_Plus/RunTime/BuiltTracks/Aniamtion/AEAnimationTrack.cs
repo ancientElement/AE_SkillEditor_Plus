@@ -7,7 +7,7 @@ using AE_SkillEditor_Plus.RunTime.Interface;
 namespace AE_SkillEditor_Plus.RunTime.BuiltTracks
 {
     [AETrackName(Name = "动画")]
-    [AETrackColor(0.5f, 0.1f, 0.2f)]
+    [AETrackColor(127f/255, 252f/255, 228f/255)]
     [AEBindClip(ClipType = typeof(AEAnimationClip))]
     [Serializable]
     public class AEAnimationTrack : StandardTrack, IEditorBehaviour

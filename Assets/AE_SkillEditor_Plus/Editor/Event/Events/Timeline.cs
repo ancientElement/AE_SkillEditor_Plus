@@ -4,7 +4,7 @@
     {
         public TimelineScaleEvent()
         {
-            this.AeuiEventType = AEUIEventType.TimelineScale;
+            this.EventType = AEUIEventType.TimelineScale;
         }
     }
     
@@ -12,7 +12,7 @@
     {
         public TimelineDragEndEvent()
         {
-            this.AeuiEventType = AEUIEventType.TimelineDragEnd;
+            this.EventType = AEUIEventType.TimelineDragEnd;
         }
     }
 
@@ -20,7 +20,7 @@
     {
         public TimelineDragEvent()
         {
-            this.AeuiEventType = AEUIEventType.TimelineDrag;
+            this.EventType = AEUIEventType.TimelineDrag;
         }
     }
 }

@@ -10,7 +10,7 @@
     {
         public ClipMoveEvent()
         {
-            this.AeuiEventType = AEUIEventType.ClipMove;
+            this.EventType = AEUIEventType.ClipMove;
         }
 
         public float OffsetMouseX; //鼠标相对Start的偏移 单位是Rect的x
@@ -20,7 +20,7 @@
     {
         public ClipMoveEndEvent()
         {
-            this.AeuiEventType = AEUIEventType.ClipMoveEnd;
+            this.EventType = AEUIEventType.ClipMoveEnd;
         }
     }
 
@@ -28,7 +28,7 @@
     {
         public ClipClickEvent()
         {
-            this.AeuiEventType = AEUIEventType.ClipClick;
+            this.EventType = AEUIEventType.ClipClick;
         }
 
         public float OffsetMouseX; //鼠标相对Start的偏移 单位是Rect的x
@@ -38,7 +38,7 @@
     {
         public ClipResizeEvent()
         {
-            this.AeuiEventType = AEUIEventType.ClipResize;
+            this.EventType = AEUIEventType.ClipResize;
         }
 
         public float OffsetMouseX; //鼠标相对End的偏移 单位是Rect的x
@@ -48,7 +48,7 @@
     {
         public ClipResizeEndEvent()
         {
-            this.AeuiEventType = AEUIEventType.ClipResizeEnd;
+            this.EventType = AEUIEventType.ClipResizeEnd;
         }
     }
     
@@ -56,7 +56,7 @@
     {
         public ClipRightClickEvent()
         {
-            this.AeuiEventType = AEUIEventType.ClipRightClick;
+            this.EventType = AEUIEventType.ClipRightClick;
         }
     }
 
@@ -64,7 +64,7 @@
     {
         public KeyboradEvent()
         {
-            this.AeuiEventType = AEUIEventType.ClipKeyborad;
+            this.EventType = AEUIEventType.ClipKeyborad;
         }
 
         public Shortcut Shortcut;
