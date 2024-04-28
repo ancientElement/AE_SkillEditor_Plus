@@ -29,7 +29,7 @@ namespace AE_SkillEditor_Plus.RunTime.BuiltTracks
             //     context.transform.position += deltaPosition + prePosition;
             // else
             // context.transform.position += Clip.StartPosition;
-            // lastPosition = context.transform.position;
+            // lastPosition = context.transform.position;.
             // context.transform.position += lastPosition.magnitude * context.transform.forward;
             // Debug.Log();
             // Debug.Log(lastPosition);

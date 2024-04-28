@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Policy;
@@ -11,6 +12,7 @@ using AE_SkillEditor_Plus.RunTime;
 using AE_SkillEditor_Plus.RunTime.Attribute;
 using AE_SkillEditor_Plus.UI;
 using AE_SkillEditor_Plus.UI.Data;
+using Unity.EditorCoroutines.Editor;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEngine;
@@ -55,7 +57,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private int ControllerHeight = 38; //控件高度
         private int currentFrameID;
 
-        private int TargetFrameID;
+        private int TargetFrameID = -1;
 
         private int CurrentFrameID
         {
@@ -66,6 +68,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 if (currentFrameID == value) return;
                 currentFrameID = value;
                 CurrentFrameIDChange();
+                Repaint();
             }
         } //当前帧
 
@@ -77,7 +80,23 @@ namespace AE_SkillEditor_Plus.Editor.Window
 
         private int[] HighLight = { -1, -1 }; //选中的Clip
 
-        private bool IsPlaying; //是否在播放
+        int startFrameIndex; //从那一帧开始播放
+        private DateTime startTime; //开始播放的时间
+        private bool isPlaying; //是否在播放
+
+        private bool IsPlaying
+        {
+            get { return isPlaying; }
+            set
+            {
+                isPlaying = value;
+                if (isPlaying)
+                {
+                    EditorCoroutineUtility.StartCoroutine(PlayCoroutine(), this);
+                }
+            }
+        } //是否在播放
+
         public int FPS = 60; //帧率
         private float OneFrameTimer; //一帧时长的计时器
 
@@ -248,6 +267,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
 
         private void Update()
         {
+            // Debug.Log(TargetFrameID);
             if (TargetFrameID != -1 && CurrentFrameID != TargetFrameID)
             {
                 for (int i = 0; i < Mathf.Abs(TargetFrameID - CurrentFrameID); i++)
@@ -260,30 +280,54 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 }
             }
 
-            if (!IsPlaying) return;
-            if (CurrentFrameID >= Asset.Duration)
-            {
-                IsPlaying = false;
-                return;
-            }
+            // if (!IsPlaying) return;
+            // if (Asset == null) return;
+            // if (CurrentFrameID >= Asset.Duration)
+            // {
+            //     IsPlaying = false;
+            //     return;
+            // }
 
-            OneFrameTimer -= Time.deltaTime;
-            if (OneFrameTimer <= 0)
-            {
-                OneFrameTimer = 1f / FPS;
-                Debug.Log(OneFrameTimer);
-                Tick(CurrentFrameID);
-                CurrentFrameID += 1;
-            }
+            // OneFrameTimer -= Time.deltaTime;
+            // // Debug.Log(Time.deltaTime);
+            // if (OneFrameTimer <= 0)
+            // {
+            //     OneFrameTimer = 1f / FPS;
+            //     // Debug.Log(OneFrameTimer);
+            //     // Tick(CurrentFrameID);
+            //     CurrentFrameID += 1;
+            // }
         }
 
-        private void Tick(int frameID)
+        private IEnumerator PlayCoroutine()
         {
-            if (Asset == null) return;
-            // Debug.Log(UnityEngine.Event.current.mousePosition.x);
-            // Debug.Log(currentFrameID);
-            AETimelineEditorTick.Tick(CurrentFrameID, FPS, Context);
+            startTime = DateTime.Now;
+            startFrameIndex = CurrentFrameID;
+            while (IsPlaying)
+            {
+                //时间差
+                float differ = (float)DateTime.Now.Subtract(startTime).TotalSeconds;
+                //计算当前帧
+                //TODO:速度
+                CurrentFrameID = (int)(differ * FPS * 1) + startFrameIndex;
+                if (Asset != null && CurrentFrameID >= Asset.Duration)
+                {
+                    IsPlaying = false;
+                }
+
+                yield return null;
+            }
+
+            yield break;
         }
+
+        // private void Tick(int frameID)
+        // {
+        //     if (Asset == null) return;
+        //     // Debug.Log(UnityEngine.Event.current.mousePosition.x);
+        //     // Debug.Log(currentFrameID);
+        //     AETimelineEditorTick.Tick(CurrentFrameID, FPS, Context);
+        // }
 
         #region 事件处理
 
@@ -354,8 +398,10 @@ namespace AE_SkillEditor_Plus.Editor.Window
         //当前帧改变事件
         private void CurrentFrameIDChange()
         {
-            Tick(CurrentFrameID);
-            Repaint();
+            if (Asset == null) return;
+            // Debug.Log(UnityEngine.Event.current.mousePosition.x);
+            // Debug.Log(currentFrameID);
+            AETimelineEditorTick.Tick(CurrentFrameID, FPS, Context);
         }
 
         //在时间轴上拖动

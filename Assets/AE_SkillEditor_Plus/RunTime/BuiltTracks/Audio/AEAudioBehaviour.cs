@@ -16,7 +16,8 @@ namespace AE_SkillEditor_Plus.RunTime.BuiltTracks.Audio
         public override void OnEnter(GameObject context, int currentFrameID)
         {
             base.OnEnter(context, currentFrameID);
-            Debug.Log("VAR");
+            if (context == null) return;
+            // Debug.Log("VAR");
             if (currentFrameID == 0 && Clip.AudioClip != null)
             {
                 var position = context.transform.TransformPoint(Clip.Position);
