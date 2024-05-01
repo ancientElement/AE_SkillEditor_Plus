@@ -111,7 +111,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 if (value == "") return;
                 assetPath = value;
                 Asset = AETimelineFactory.LoadTimeLineAsset(assetPath);
-                AETimelineEditorTick.PlayAsset(Asset);
+                EditorTick.PlayAsset(Asset);
             }
         }
 
@@ -120,13 +120,16 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private Vector2 ScrollPosTimeline;
 
         public GameObject Context; //运行依附的游戏对象
+        private AETimelineEditorTick EditorTick;
+
 
         //初始化
         private void OnEnable()
         {
             EventCenter.AddEventListener(this, ProcessEvent);
+            EditorTick = new AETimelineEditorTick();
             if (AssetPath != "") Asset = AETimelineFactory.LoadTimeLineAsset(AssetPath);
-            if (Asset != null) AETimelineEditorTick.PlayAsset(Asset);
+            if (Asset != null) EditorTick.PlayAsset(Asset);
         }
 
         //销毁
@@ -196,6 +199,17 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 CreateAddTreakMenu(Asset.Tracks.Count, menu);
                 // 显示菜单
                 menu.ShowAsContext();
+            }
+            
+            //中间拖动
+            if (Asset != null && rightRect.Contains(UnityEngine.Event.current.mousePosition) &&
+                UnityEngine.Event.current.type == UnityEngine.EventType.MouseDrag &&
+                UnityEngine.Event.current.button == 2)
+            {
+                // UnityEngine.Debug.Log("中键拖动" + UnityEngine.Event.current.delta);
+                ScrollPosBody.x -= UnityEngine.Event.current.delta.x;
+                // ScrollPosBody.y -= UnityEngine.Event.current.delta.y;
+                Repaint();
             }
 
             //时间轴
@@ -401,7 +415,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
             if (Asset == null) return;
             // Debug.Log(UnityEngine.Event.current.mousePosition.x);
             // Debug.Log(currentFrameID);
-            AETimelineEditorTick.Tick(CurrentFrameID, FPS, Context);
+            EditorTick.Tick(CurrentFrameID, FPS, Context);
         }
 
         //在时间轴上拖动
@@ -499,19 +513,20 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     // var temp = AETimelineFactory.CopyClip(Asset,  tempClipIndex[0], tempClipIndex[1]);
                     // tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
                     tempObject = Object.Instantiate(tempObject);
-                    AETimelineFactory.AddClip(Asset, AssetPath, keyborad.TrackIndex, MouseCurrentFrameID, tempObject);
+                    AETimelineFactory.AddClip(Asset, EditorTick, AssetPath, keyborad.TrackIndex, MouseCurrentFrameID,
+                        tempObject);
                     break;
                 //TODO:未实现
                 case Shortcut.CtrlX:
                     tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
                     // tempClipIndex[0] = keyborad.TrackIndex;
                     // tempClipIndex[1] = keyborad.ClipIndex;
-                    AETimelineFactory.RemoveClip(Asset, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
+                    AETimelineFactory.RemoveClip(Asset, EditorTick, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
                     HighLight[0] = -1;
                     HighLight[1] = -1;
                     break;
                 case Shortcut.Delete:
-                    AETimelineFactory.RemoveClip(Asset, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
+                    AETimelineFactory.RemoveClip(Asset, EditorTick, AssetPath, keyborad.TrackIndex, keyborad.ClipIndex);
                     HighLight[0] = -1;
                     HighLight[1] = -1;
                     break;
@@ -528,7 +543,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
             CreateAddTreakMenu(click.TrackIndex, menu);
             menu.AddItem(new GUIContent("删除轨道"), false, () =>
             {
-                AETimelineFactory.RemoveTrack(Asset, AssetPath, click.TrackIndex);
+                AETimelineFactory.RemoveTrack(Asset, EditorTick, AssetPath, click.TrackIndex);
                 HighLight[0] = -1;
                 HighLight[1] = -1;
             });
@@ -550,7 +565,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     {
                         // var obj = Activator.CreateInstance(type) as StandardTrack;
                         menu.AddItem(new GUIContent("添加轨道/" + type.Name), false,
-                            () => { AETimelineFactory.CreatTrack(Asset, AssetPath, trackIndex, type); });
+                            () => { AETimelineFactory.CreatTrack(Asset, EditorTick, AssetPath, trackIndex, type); });
                     }
                 }
             }
@@ -562,7 +577,10 @@ namespace AE_SkillEditor_Plus.Editor.Window
             GenericMenu menu = new GenericMenu();
             // 添加添加Clip
             menu.AddItem(new GUIContent("添加Clip"), false,
-                () => { AETimelineFactory.CreateClip(Asset, AssetPath, click.TrackIndex, click.MouseFrameID); });
+                () =>
+                {
+                    AETimelineFactory.CreateClip(Asset, EditorTick, AssetPath, click.TrackIndex, click.MouseFrameID);
+                });
             // 显示菜单
             menu.ShowAsContext();
         }

@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace AE_SkillEditor_Plus.Editor.Driver
 {
-    internal static class AETimelineEditorTick
+    public class AETimelineEditorTick
     {
-        private static List<List<AEPlayableBehaviour>> Behaviors;
-        private static AETimelineAsset m_asset;
+        private List<List<AEPlayableBehaviour>> Behaviors;
+        private AETimelineAsset m_asset;
 
-        public static void PlayAsset(AETimelineAsset asset)
+        public void PlayAsset(AETimelineAsset asset)
         {
             // Debug.Log("VAR");
             m_asset = asset;
@@ -29,7 +29,7 @@ namespace AE_SkillEditor_Plus.Editor.Driver
             }
         }
 
-        public static void Tick(int currentFrameID, int FPS, GameObject context)
+        public void Tick(int currentFrameID, int FPS, GameObject context)
         {
             if (Behaviors == null) return;
             if (currentFrameID > m_asset.Duration) return;
@@ -46,7 +46,7 @@ namespace AE_SkillEditor_Plus.Editor.Driver
                         if (behavior.State == AEPlayableStateEnum.Exit)
                         {
                             // Debug.Log(clip.Name + "OnEnter");
-                            behavior.OnEnter(context,currentFrameID - clip.StartID);
+                            behavior.OnEnter(context, currentFrameID - clip.StartID);
                         }
 
                         if (behavior.State == AEPlayableStateEnum.Running)
@@ -57,10 +57,32 @@ namespace AE_SkillEditor_Plus.Editor.Driver
                     else if ((currentFrameID < clip.StartID || currentFrameID >= clip.StartID + clip.Duration) &&
                              behavior.State == AEPlayableStateEnum.Running)
                     {
-                        behavior.OnExit(context,currentFrameID - clip.StartID);
+                        behavior.OnExit(context, currentFrameID - clip.StartID);
                     }
                 }
             }
+        }
+
+        public void AddBehaviour(int trackIndex, int clipIndex)
+        {
+            var track = m_asset.Tracks[trackIndex];
+            var clip = track.Clips[clipIndex];
+            Behaviors[trackIndex].Insert(clipIndex, (track as IEditorBehaviour)?.CreateEditorBehaviour(clip));
+        }
+
+        public void RemoveBehaviour(int trackIndex, int clipIndex)
+        {
+            Behaviors[trackIndex].RemoveAt(clipIndex);
+        }
+
+        public void AddTrack(int trackIndex)
+        {
+            Behaviors.Insert(trackIndex, new List<AEPlayableBehaviour>());
+        }
+
+        public void RemoveTrack(int trackIndex)
+        {
+            Behaviors.RemoveAt(trackIndex);
         }
     }
 }

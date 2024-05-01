@@ -25,8 +25,10 @@ namespace AE_SkillEditor_Plus.RunTime.BuiltTracks.Effect
 
         public override void Tick(int currentFrameID, int fps, GameObject context)
         {
+            // Debug.Log(Clip.Prefab?.name);
             base.Tick(currentFrameID, fps, context);
             if (context == null) return;
+            if (temp == null) return;
             var position = context.transform.TransformPoint(Clip.Position);
             temp.transform.position = position;
         }

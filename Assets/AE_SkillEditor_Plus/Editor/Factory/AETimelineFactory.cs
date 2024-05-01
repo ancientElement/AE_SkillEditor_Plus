@@ -35,25 +35,34 @@ namespace AE_SkillEditor_Plus.Factory
             }
         }
 
-        public static void CreatTrack(AETimelineAsset asset, string path, int trackIndex, Type type)
+        public static void CreatTrack(AETimelineAsset asset, AETimelineEditorTick editorTick, string path,
+            int trackIndex, Type type)
         {
             //TODO:修改为ScriptableObject嵌套
             // Debug.Log(type);
             // var track = ScriptableObject.CreateInstance(type) as StandardTrack;
             var track = Activator.CreateInstance(type) as StandardTrack;
             // Debug.Log("在第"+trackIndex+"创建了轨道");
-
             asset.Tracks.Insert(trackIndex, track);
+            editorTick.AddTrack(trackIndex);
             Save(asset, path);
         }
 
-        public static void RemoveTrack(AETimelineAsset asset, string path, int trackIndex)
+        public static void RemoveTrack(AETimelineAsset asset, AETimelineEditorTick editorTick, string path,
+            int trackIndex)
         {
+            for (int i = asset.Tracks[trackIndex].Clips.Count - 1; i >= 0; i--)
+            {
+                RemoveClip(asset, editorTick, path, trackIndex, i);
+            }
+
             asset.Tracks.RemoveAt(trackIndex);
+            editorTick.RemoveTrack(trackIndex);
             Save(asset, path);
         }
 
-        public static void CreateClip(AETimelineAsset asset, string path, int trackIndex, int startIndex)
+        public static void CreateClip(AETimelineAsset asset, AETimelineEditorTick editorTick, string path,
+            int trackIndex, int startIndex)
         {
             //TODO:修改为ScriptableObject嵌套
             // var clip = Activator.CreateInstance(asset.Tracks[trackIndex].GetType()
@@ -63,20 +72,21 @@ namespace AE_SkillEditor_Plus.Factory
             clip.StartID = startIndex;
             clip.Duration = 100;
             clip.Name = clip.GetType().Name;
-            AddClip(asset, path, trackIndex, startIndex, clip);
+            AddClip(asset, editorTick, path, trackIndex, startIndex, clip);
         }
 
-        public static void AddClip(AETimelineAsset asset, string path, int trackIndex, int startIndex,
+        public static void AddClip(AETimelineAsset asset, AETimelineEditorTick editorTick, string path, int trackIndex,
+            int startIndex,
             StandardClip clip)
         {
             if (clip == null) return;
             //这里必须先得到length
             clip.StartID = startIndex;
-            //找到右边第一个大于他的数
+            //找到左边边第一个小于他的数  找到右边第一个大于他的数 
+            int left = -1;
             if (asset.Tracks[trackIndex].Clips.Count >= 1)
             {
                 int leftStartID = Int32.MinValue;
-                int left = -1;
 
                 int rightStartID = Int32.MaxValue;
                 int right = -1;
@@ -122,6 +132,9 @@ namespace AE_SkillEditor_Plus.Factory
 
             AssetDatabase.AddObjectToAsset(clip, asset);
             asset.Tracks[trackIndex].Clips.Add(clip);
+            int clipIndex = left == -1 ? 0 : left + 1;
+            // Debug.Log(clipIndex);
+            editorTick.AddBehaviour(trackIndex, clipIndex);
             Save(asset, path);
         }
 
@@ -171,10 +184,12 @@ namespace AE_SkillEditor_Plus.Factory
             return newClip;
         }
 
-        public static void RemoveClip(AETimelineAsset asset, string path, int trackIndex, int clipIndex)
+        public static void RemoveClip(AETimelineAsset asset, AETimelineEditorTick editorTick, string path,
+            int trackIndex, int clipIndex)
         {
             AssetDatabase.RemoveObjectFromAsset(asset.Tracks[trackIndex].Clips[clipIndex]);
             asset.Tracks[trackIndex].Clips.RemoveAt(clipIndex);
+            editorTick.RemoveBehaviour(trackIndex, clipIndex);
             Save(asset, path);
         }
 
@@ -291,7 +306,8 @@ namespace AE_SkillEditor_Plus.Factory
             // Debug.Log(maxFar);
 
             //重新生成
-            AETimelineEditorTick.PlayAsset(asset);
+            //TODO:不对劲
+            // AETimelineEditorTick.PlayAsset(asset);
             //TODO: 序列化形式
             // {
             //     //序列化timeline
