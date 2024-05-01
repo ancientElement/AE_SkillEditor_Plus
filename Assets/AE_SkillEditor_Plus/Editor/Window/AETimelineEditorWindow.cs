@@ -200,7 +200,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 // 显示菜单
                 menu.ShowAsContext();
             }
-            
+
             //中间拖动
             if (Asset != null && rightRect.Contains(UnityEngine.Event.current.mousePosition) &&
                 UnityEngine.Event.current.type == UnityEngine.EventType.MouseDrag &&
@@ -493,6 +493,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         //Clip移动事件
         private void ClipMove(ClipMoveEvent clipMove)
         {
+            Debug.Log((int)(MouseCurrentFrameID - (clipMove.OffsetMouseX / WidthPreFrame)));
             AETimelineFactory.MoveClip(Asset, AssetPath, clipMove.TrackIndex, clipMove.ClipIndex,
                 (int)(MouseCurrentFrameID - (clipMove.OffsetMouseX / WidthPreFrame)));
             Repaint();
@@ -516,7 +517,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     AETimelineFactory.AddClip(Asset, EditorTick, AssetPath, keyborad.TrackIndex, MouseCurrentFrameID,
                         tempObject);
                     break;
-                //TODO:未实现
+                //DO:未实现
                 case Shortcut.CtrlX:
                     tempObject = AETimelineFactory.CopyClip(Asset, keyborad.TrackIndex, keyborad.ClipIndex);
                     // tempClipIndex[0] = keyborad.TrackIndex;

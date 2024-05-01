@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEAudioClip
-  StartID: 20
-  Duration: 23
+  StartID: 68
+  Duration: 85
   AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Volume: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEEffectClip
-  StartID: 181
+  StartID: 350
   Duration: 143
   Prefab: {fileID: 7935653480703517799, guid: 26882613ecc0c854dbb769fe4a4542ee, type: 3}
   Position: {x: 0, y: 0.84, z: 1.88}
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: AEAnimationClip
   StartID: 0
-  Duration: 210
+  Duration: 142
   AnimationClip: {fileID: 7400000, guid: 13250cd6fb86cb348a716bc9ee801fb6, type: 2}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -69,7 +69,7 @@ MonoBehaviour:
   - rid: 5306260253049880587
   - rid: 5306260253049880590
   - rid: 3150064567704879104
-  Duration: 397
+  Duration: 493
   references:
     version: 2
     RefIds:
@@ -108,8 +108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEEffectClip
-  StartID: 60
-  Duration: 61
+  StartID: 242
+  Duration: 108
   Prefab: {fileID: 7935653480703517799, guid: 26882613ecc0c854dbb769fe4a4542ee, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Rotarion: {x: 0, y: 0, z: 0}
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEEffectClip
-  StartID: 174
+  StartID: 0
   Duration: 100
   Prefab: {fileID: 7935653480703517799, guid: 26882613ecc0c854dbb769fe4a4542ee, type: 3}
   Position: {x: 0, y: 0, z: 0}
@@ -144,6 +144,6 @@ MonoBehaviour:
   m_Name: (Clone)
   m_EditorClassIdentifier: 
   Name: AEAnimationClip
-  StartID: 210
-  Duration: 187
+  StartID: 142
+  Duration: 110
   AnimationClip: {fileID: 7400000, guid: 3ef7e130b2b66754d9a076ad47d0c279, type: 2}

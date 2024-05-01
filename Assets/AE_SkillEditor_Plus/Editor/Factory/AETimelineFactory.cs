@@ -267,11 +267,15 @@ namespace AE_SkillEditor_Plus.Factory
 
                 if (left != -1 && target < leftStartID + asset.Tracks[trackIndex].Clips[left].Duration)
                 {
+                    asset.Tracks[trackIndex].Clips[clipIndex].StartID =
+                        leftStartID + asset.Tracks[trackIndex].Clips[left].Duration;
                     return;
                 }
 
                 if (right != -1 && target + asset.Tracks[trackIndex].Clips[clipIndex].Duration > rightStartID)
                 {
+                    asset.Tracks[trackIndex].Clips[clipIndex].StartID =
+                        rightStartID -  asset.Tracks[trackIndex].Clips[clipIndex].Duration;
                     return;
                 }
             }
@@ -306,7 +310,7 @@ namespace AE_SkillEditor_Plus.Factory
             // Debug.Log(maxFar);
 
             //重新生成
-            //TODO:不对劲
+            //DO: 不对劲
             // AETimelineEditorTick.PlayAsset(asset);
             //TODO: 序列化形式
             // {
