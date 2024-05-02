@@ -9,7 +9,6 @@ namespace AE_SkillEditor_Plus.RunTime.BuiltTracks
         private AEAnimationClip Clip;
 
         // private Vector3 lastPosition;
-
         // private float deltaPosition;
         // private static Vector3 prePosition;
 
@@ -24,11 +23,11 @@ namespace AE_SkillEditor_Plus.RunTime.BuiltTracks
             if (Clip.AnimationClip == null) return;
             base.Tick(currentFrameID, fps, context);
             Clip.AnimationClip.SampleAnimation(context, (float)currentFrameID / fps);
+            context.transform.position += Clip.StartPosition;
             // Vector3 deltaPosition = context.transform.position - lastPosition;
             // if (Mathf.Rad2Deg * Vector3.Dot(deltaPosition, context.transform.forward) > 160)
             //     context.transform.position += deltaPosition + prePosition;
             // else
-            // context.transform.position += Clip.StartPosition;
             // lastPosition = context.transform.position;.
             // context.transform.position += lastPosition.magnitude * context.transform.forward;
             // Debug.Log();

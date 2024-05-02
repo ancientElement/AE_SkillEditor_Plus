@@ -10,6 +10,7 @@ using AE_SkillEditor_Plus.Editor.Inspector;
 using AE_SkillEditor_Plus.Factory;
 using AE_SkillEditor_Plus.RunTime;
 using AE_SkillEditor_Plus.RunTime.Attribute;
+using AE_SkillEditor_Plus.RunTime.Interface;
 using AE_SkillEditor_Plus.UI;
 using AE_SkillEditor_Plus.UI.Data;
 using Unity.EditorCoroutines.Editor;
@@ -149,12 +150,23 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 var trackData = Asset.Tracks[i];
                 var trackStyle = new TrackStyleData();
                 trackStyle.Clips = new List<ClipStyleData>();
-                string name = trackData.GetType().GetCustomAttribute<AETrackNameAttribute>().Name;
+                var trackType = trackData.GetType();
+
+                string name = trackType.GetCustomAttribute<AETrackNameAttribute>().Name;
                 trackStyle.Name = name;
-                var colorAttribute = trackData.GetType().GetCustomAttribute<AETrackColorAttribute>();
+
+                var colorAttribute = trackType.GetCustomAttribute<AETrackColorAttribute>();
                 trackStyle.Color = colorAttribute == null
                     ? new Color(251f / 255, 0f / 255, 253f / 255)
                     : colorAttribute.Color;
+
+                var updateUIInterface = trackData as IClipStyle;
+                if (updateUIInterface != null)
+                {
+                    // Debug.Log(updateUIInterface);
+                    trackStyle.UpdateUI = updateUIInterface.UpdateUI;
+                }
+
                 for (var j = 0; j < trackData.Clips.Count; j++)
                 {
                     var clip = trackData.Clips[j];
@@ -236,7 +248,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
             for (var index = 0; index < styleData.Count; index++)
             {
                 var trackData = styleData[index];
-                var track = new TrackStyle();
+                // var track = new TrackStyle();
                 //为轨道划分Rect
                 var rectBody = new Rect(trackbodyRect.x, height, newTrackBodyRect.width, TrackHeight);
                 TrackBodyStyle.UpdateUI(this, rectBody, HighLight, widthPreFrame, trackData, index);
@@ -493,7 +505,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         //Clip移动事件
         private void ClipMove(ClipMoveEvent clipMove)
         {
-            Debug.Log((int)(MouseCurrentFrameID - (clipMove.OffsetMouseX / WidthPreFrame)));
+            // Debug.Log((int)(MouseCurrentFrameID - (clipMove.OffsetMouseX / WidthPreFrame)));
             AETimelineFactory.MoveClip(Asset, AssetPath, clipMove.TrackIndex, clipMove.ClipIndex,
                 (int)(MouseCurrentFrameID - (clipMove.OffsetMouseX / WidthPreFrame)));
             Repaint();

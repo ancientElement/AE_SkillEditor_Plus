@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: AEAudioClip
   StartID: 68
-  Duration: 85
+  Duration: 73
   AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
   Position: {x: 0, y: 0, z: 0}
-  Volume: 0
+  Volume: 1
 --- !u!114 &-3554210780914608285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEEffectClip
-  StartID: 350
+  StartID: 166
   Duration: 143
   Prefab: {fileID: 7935653480703517799, guid: 26882613ecc0c854dbb769fe4a4542ee, type: 3}
   Position: {x: 0, y: 0.84, z: 1.88}
@@ -49,9 +49,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEAnimationClip
-  StartID: 0
-  Duration: 142
+  StartID: 88
+  Duration: 263
   AnimationClip: {fileID: 7400000, guid: 13250cd6fb86cb348a716bc9ee801fb6, type: 2}
+  StartPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +70,7 @@ MonoBehaviour:
   - rid: 5306260253049880587
   - rid: 5306260253049880590
   - rid: 3150064567704879104
-  Duration: 493
+  Duration: 652
   references:
     version: 2
     RefIds:
@@ -108,10 +109,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEEffectClip
-  StartID: 242
+  StartID: 31
   Duration: 108
   Prefab: {fileID: 7935653480703517799, guid: 26882613ecc0c854dbb769fe4a4542ee, type: 3}
-  Position: {x: 0, y: 0, z: 0}
+  Position: {x: 0.63, y: 0.78, z: 1.9}
   Rotarion: {x: 0, y: 0, z: 0}
 --- !u!114 &4129560980655315721
 MonoBehaviour:
@@ -126,10 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEEffectClip
-  StartID: 0
+  StartID: 361
   Duration: 100
   Prefab: {fileID: 7935653480703517799, guid: 26882613ecc0c854dbb769fe4a4542ee, type: 3}
-  Position: {x: 0, y: 0, z: 0}
+  Position: {x: 1.05, y: 1.02, z: 0.9}
   Rotarion: {x: 0, y: 0, z: 0}
 --- !u!114 &7687046495285315970
 MonoBehaviour:
@@ -144,6 +145,7 @@ MonoBehaviour:
   m_Name: (Clone)
   m_EditorClassIdentifier: 
   Name: AEAnimationClip
-  StartID: 142
-  Duration: 110
+  StartID: 351
+  Duration: 301
   AnimationClip: {fileID: 7400000, guid: 3ef7e130b2b66754d9a076ad47d0c279, type: 2}
+  StartPosition: {x: -0.005844459, y: 0.011445539, z: 2.0572565}

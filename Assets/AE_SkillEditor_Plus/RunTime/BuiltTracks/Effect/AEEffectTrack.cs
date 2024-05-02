@@ -10,11 +10,8 @@ namespace AE_SkillEditor_Plus.RunTime.BuiltTracks.Effect
     [AETrackColor(127f / 255, 214f / 255, 252f / 255)]
     [AEBindClip(ClipType = typeof(AEEffectClip))]
     [Serializable]
-    public class AEEffectTrack : StandardTrack,IEditorBehaviour 
+    public class AEEffectTrack : StandardTrack, IEditorBehaviour
     {
-        public AEPlayableBehaviour CreateEditorBehaviour(StandardClip clip)
-        {
-            return new AEEffectBehaviour(clip);
-        }
+        public AEPlayableBehaviour CreateEditorBehaviour(StandardClip clip) => new AEEffectBehaviour(clip);
     }
 }

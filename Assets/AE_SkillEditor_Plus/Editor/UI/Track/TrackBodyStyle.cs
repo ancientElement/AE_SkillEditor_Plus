@@ -16,7 +16,8 @@ namespace AE_SkillEditor_Plus.UI
         {
             // Debug.Log(rect);
             //绘制背景
-            EditorGUI.DrawRect(new Rect(rect.x,rect.y,rect.width,rect.height), new Color(64f / 255, 64f / 255, 64f / 255));
+            EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, rect.height),
+                new Color(64f / 255, 64f / 255, 64f / 255));
             //划分
             for (int i = 0; i < data.Clips.Count; i++)
             {
@@ -27,7 +28,7 @@ namespace AE_SkillEditor_Plus.UI
                     rect.y,
                     (clipData.EndID - clipData.StartID) * widthPreFrame,
                     rect.height);
-                TrackClipStyle.UpdateUI(window, clipRect, highLight, data.Color, clipData.Name, trackIndex, i);
+                TrackClipStyle.UpdateUI(window, clipRect, highLight, data.Color, clipData.Name, trackIndex, i,data.UpdateUI);
             }
 
             //处理事件

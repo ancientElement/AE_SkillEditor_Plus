@@ -11,9 +11,6 @@ namespace AE_SkillEditor_Plus.RunTime.BuiltTracks.Audio
     [Serializable]
     public class AEAudioTrack : StandardTrack,IEditorBehaviour
     {
-        public AEPlayableBehaviour CreateEditorBehaviour(StandardClip clip)
-        {
-            return new AEAudioBehaviour(clip);
-        }
+        public AEPlayableBehaviour CreateEditorBehaviour(StandardClip clip)=> new AEAudioBehaviour(clip);
     }
 }
