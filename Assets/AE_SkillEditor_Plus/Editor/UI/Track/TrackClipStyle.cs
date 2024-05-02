@@ -24,7 +24,7 @@ namespace AE_SkillEditor_Plus.UI
 
         public static void UpdateUI(AETimelineEditorWindow window, Rect rect, int[] highLight, Color color,
             string Name, int trackIndex,
-            int clipIndex, ClipUIAction additoin)
+            int clipIndex, float widthPerFrame, ClipUIAction additoin)
         {
             //绘制背景
             if (highLight[0] == trackIndex && highLight[1] == clipIndex)
@@ -35,6 +35,7 @@ namespace AE_SkillEditor_Plus.UI
             //绘制Cip颜色标识
             EditorGUI.DrawRect(new Rect(rect.x, rect.y + rect.height * 0.8f, rect.width, rect.height * 0.2f),
                 color);
+            //TODO:名称区域不对
             //绘制名称
             GUI.contentColor = Color.white;
             GUI.Label(rect, Name, "Box");
@@ -49,7 +50,7 @@ namespace AE_SkillEditor_Plus.UI
                 new Vector3(rect.x, rect.y) // 返回左上角闭合
             );
             //额外的绘制
-            additoin?.Invoke(rect, highLight, color, Name, trackIndex, clipIndex);
+            additoin?.Invoke(window,rect, highLight, color, Name, widthPerFrame,trackIndex, clipIndex);
 
             ProcessEvent(window, rect, trackIndex, clipIndex);
         }

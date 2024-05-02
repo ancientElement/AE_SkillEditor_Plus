@@ -41,10 +41,10 @@ namespace AE_SkillEditor_Plus.Editor.Window
         private int TrackHeight = 30; //轨道高度
         private float widthPreFrame = 1f;
 
-        private float WidthPreFrame
+        public float WidthPreFrame
         {
             get { return widthPreFrame; }
-            set
+            private set
             {
                 if ((value) <= 0.005f) widthPreFrame = 0.005f;
                 else if (value >= 194f) widthPreFrame = 194f;
@@ -160,11 +160,39 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     ? new Color(251f / 255, 0f / 255, 253f / 255)
                     : colorAttribute.Color;
 
-                var updateUIInterface = trackData as IClipStyle;
-                if (updateUIInterface != null)
+                // var updateUIInterface = trackData as IClipStyle;
+                // if (updateUIInterface != null)
+                // {
+                //     // Debug.Log(updateUIInterface);
+                //     trackStyle.UpdateUI = updateUIInterface.UpdateUI;
+                // }
+                // 获取 MethodInfo
+
+                var classNameAttribute = trackType.GetCustomAttribute<ClipStyleAttribute>();
+                if (classNameAttribute != null)
                 {
-                    // Debug.Log(updateUIInterface);
-                    trackStyle.UpdateUI = updateUIInterface.UpdateUI;
+                    var className = classNameAttribute.ClassName;
+                    MethodInfo methodInfo = Type.GetType(className)
+                        .GetMethod("UpdateUI", BindingFlags.Static | BindingFlags.Public);
+                    // 将 MethodInfo 转换为委托
+                    if (methodInfo == null)
+                    {
+                        Debug.LogWarning("请将自定义样式方法定义为:" + typeof(ClipUIAction));
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var action = (ClipUIAction)Delegate.CreateDelegate(typeof(ClipUIAction), methodInfo);
+                            trackStyle.UpdateUI = action;
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogWarning("请将自定义样式方法定义为:" + typeof(ClipUIAction));
+                            Debug.LogError(e);
+                            // throw;
+                        }
+                    }
                 }
 
                 for (var j = 0; j < trackData.Clips.Count; j++)
@@ -244,7 +272,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
             ScrollPosHead.y = ScrollPosBody.y;
             // EditorGUI.DrawRect(newTrackBodyRect,
             // new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
-            float height = trackbodyRect.y;
+            float height = trackbodyRect.y+1f;
             for (var index = 0; index < styleData.Count; index++)
             {
                 var trackData = styleData[index];
