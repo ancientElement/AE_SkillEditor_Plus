@@ -1,5 +1,58 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8274956830060849019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca16b65469e642428c03d0c98604f3a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: AEAnimationClip
+  StartID: 436
+  Duration: 218
+  AnimationClip: {fileID: 7400000, guid: 3ef7e130b2b66754d9a076ad47d0c279, type: 2}
+  StartPosition: {x: -0.0006572589, y: -0.00059824984, z: 3.3777585}
+--- !u!114 &-7744308317822429811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7252bb5ce3b241e490494977bfe86cf8, type: 3}
+  m_Name: (Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  Name: AEAudioClip
+  StartID: 596
+  Duration: 24
+  AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Volume: 1
+--- !u!114 &-4620740072219044175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7252bb5ce3b241e490494977bfe86cf8, type: 3}
+  m_Name: (Clone)(Clone)
+  m_EditorClassIdentifier: 
+  Name: AEAudioClip
+  StartID: 87
+  Duration: 25
+  AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Volume: 1
 --- !u!114 &-4502294303355748777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13,8 +66,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEAudioClip
-  StartID: 68
-  Duration: 73
+  StartID: 50
+  Duration: 25
   AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
   Position: {x: 0, y: 0, z: 0}
   Volume: 1
@@ -70,7 +123,7 @@ MonoBehaviour:
   - rid: 5306260253049880587
   - rid: 5306260253049880590
   - rid: 3150064567704879104
-  Duration: 531
+  Duration: 654
   references:
     version: 2
     RefIds:
@@ -91,11 +144,74 @@ MonoBehaviour:
         Clips:
         - {fileID: -1027479059996711047}
         - {fileID: 7687046495285315970}
+        - {fileID: -8274956830060849019}
     - rid: 5306260253049880590
       type: {class: AEAudioTrack, ns: AE_SkillEditor_Plus.RunTime.BuiltTracks.Audio, asm: Assembly-CSharp}
       data:
         Clips:
         - {fileID: -4502294303355748777}
+        - {fileID: -4620740072219044175}
+        - {fileID: 7338951024987817894}
+        - {fileID: 1864399954249479271}
+        - {fileID: 6700508181607191845}
+        - {fileID: 1645909835199592639}
+        - {fileID: 642679346581858844}
+        - {fileID: 6918692752863193561}
+        - {fileID: -7744308317822429811}
+--- !u!114 &642679346581858844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7252bb5ce3b241e490494977bfe86cf8, type: 3}
+  m_Name: (Clone)(Clone)
+  m_EditorClassIdentifier: 
+  Name: AEAudioClip
+  StartID: 498
+  Duration: 24
+  AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Volume: 1
+--- !u!114 &1645909835199592639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7252bb5ce3b241e490494977bfe86cf8, type: 3}
+  m_Name: (Clone)(Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  Name: AEAudioClip
+  StartID: 378
+  Duration: 24
+  AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Volume: 1
+--- !u!114 &1864399954249479271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7252bb5ce3b241e490494977bfe86cf8, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  Name: AEAudioClip
+  StartID: 279
+  Duration: 24
+  AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Volume: 1
 --- !u!114 &2634313067231105793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,11 +243,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: AEEffectClip
-  StartID: 147
+  StartID: 410
   Duration: 131
   Prefab: {fileID: 7935653480703517799, guid: 26882613ecc0c854dbb769fe4a4542ee, type: 3}
   Position: {x: 1.05, y: 1.02, z: 0.9}
   Rotarion: {x: 0, y: 0, z: 0}
+--- !u!114 &6700508181607191845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7252bb5ce3b241e490494977bfe86cf8, type: 3}
+  m_Name: (Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  Name: AEAudioClip
+  StartID: 330
+  Duration: 24
+  AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Volume: 1
+--- !u!114 &6918692752863193561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7252bb5ce3b241e490494977bfe86cf8, type: 3}
+  m_Name: (Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  Name: AEAudioClip
+  StartID: 548
+  Duration: 24
+  AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Volume: 1
+--- !u!114 &7338951024987817894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7252bb5ce3b241e490494977bfe86cf8, type: 3}
+  m_Name: (Clone)(Clone)(Clone)
+  m_EditorClassIdentifier: 
+  Name: AEAudioClip
+  StartID: 128
+  Duration: 25
+  AudioClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Volume: 1
 --- !u!114 &7687046495285315970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +316,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: AEAnimationClip
   StartID: 218
-  Duration: 313
+  Duration: 218
   AnimationClip: {fileID: 7400000, guid: 3ef7e130b2b66754d9a076ad47d0c279, type: 2}
-  StartPosition: {x: -0.005844459, y: 0.011445539, z: 2.0572565}
+  StartPosition: {x: -0.0006116428, y: -0.0002052165, z: 1.3846494}
