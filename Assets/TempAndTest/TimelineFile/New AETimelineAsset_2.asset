@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8582805552044918247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca16b65469e642428c03d0c98604f3a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: AEAnimationClip
+  StartID: 87
+  Duration: 326
+  AnimationClip: {fileID: 0}
+  FadeIn: 0
+  StartPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6163eb00cd2144c29cca170a518c1b91, type: 3}
+  m_Name: New AETimelineAsset_2
+  m_EditorClassIdentifier: 
+  Tracks:
+  - rid: 3150064610159362049
+  Duration: 413
+  FPS: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3150064610159362049
+      type: {class: AEAnimationTrack, ns: AE_SkillEditor_Plus.Excample.BuiltTracks, asm: Assembly-CSharp}
+      data:
+        Clips:
+        - {fileID: -8582805552044918247}

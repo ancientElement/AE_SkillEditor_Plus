@@ -12,5 +12,6 @@ namespace AE_SkillEditor_Plus.UI.Data
         public Color Color;
         public List<ClipStyleData> Clips;
         public ClipUIAction UpdateUI;
+        public bool OverrideUI;
     }
 }

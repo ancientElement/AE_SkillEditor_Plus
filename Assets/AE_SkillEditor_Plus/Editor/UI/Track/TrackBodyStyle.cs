@@ -28,7 +28,7 @@ namespace AE_SkillEditor_Plus.UI
                     rect.y,
                     (clipData.EndID - clipData.StartID) * widthPreFrame,
                     rect.height);
-                TrackClipStyle.UpdateUI(window, clipRect, highLight, data.Color, clipData.Name, trackIndex, i,widthPreFrame,data.UpdateUI);
+                TrackClipStyle.UpdateUI(window, clipRect, highLight, data.Color, clipData.Name, trackIndex, i,widthPreFrame,data.UpdateUI,data.OverrideUI);
             }
 
             //处理事件

@@ -130,6 +130,7 @@ namespace AE_SkillEditor_Plus.Factory
                 }
             }
 
+            //附加到父资产上
             AssetDatabase.AddObjectToAsset(clip, asset);
             asset.Tracks[trackIndex].Clips.Add(clip);
             int clipIndex = left == -1 ? 0 : left + 1;
@@ -187,6 +188,7 @@ namespace AE_SkillEditor_Plus.Factory
         public static void RemoveClip(AETimelineAsset asset, AETimelineEditorTick editorTick, string path,
             int trackIndex, int clipIndex)
         {
+            // 从父资产中删除
             AssetDatabase.RemoveObjectFromAsset(asset.Tracks[trackIndex].Clips[clipIndex]);
             asset.Tracks[trackIndex].Clips.RemoveAt(clipIndex);
             editorTick.RemoveBehaviour(trackIndex, clipIndex);

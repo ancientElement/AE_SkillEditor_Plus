@@ -98,7 +98,20 @@ namespace AE_SkillEditor_Plus.Editor.Window
             }
         } //是否在播放
 
-        public int FPS = 60; //帧率
+        public int FPS
+        {
+            get
+            {
+                if (Asset != null) return Asset.FPS;
+                return 0;
+            }
+            set
+            {
+                if (Asset != null) Asset.FPS = value;
+                return;
+            }
+        } //帧率
+
         private float OneFrameTimer; //一帧时长的计时器
 
         public AETimelineAsset Asset { get; private set; }
@@ -168,7 +181,8 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 // }
                 // 获取 MethodInfo
 
-                var classNameAttribute = trackType.GetCustomAttribute<ClipStyleAttribute>();
+                //获取自定义Clip样式函数
+                var classNameAttribute = trackType.GetCustomAttribute<AEClipStyleAttribute>();
                 if (classNameAttribute != null)
                 {
                     var className = classNameAttribute.ClassName;
@@ -177,18 +191,21 @@ namespace AE_SkillEditor_Plus.Editor.Window
                     // 将 MethodInfo 转换为委托
                     if (methodInfo == null)
                     {
-                        Debug.LogWarning("请将自定义样式方法定义为:" + typeof(ClipUIAction));
+                        Debug.LogError("请将自定义样式方法定义为:" + typeof(ClipUIAction));
+                        Debug.LogError("请将自定义样式方法定义为静态函数");
                     }
                     else
                     {
                         try
                         {
                             var action = (ClipUIAction)Delegate.CreateDelegate(typeof(ClipUIAction), methodInfo);
+                            var overrideUI = classNameAttribute.Override;
                             trackStyle.UpdateUI = action;
+                            trackStyle.OverrideUI = overrideUI;
                         }
                         catch (Exception e)
                         {
-                            Debug.LogWarning("请将自定义样式方法定义为:" + typeof(ClipUIAction));
+                            Debug.LogError("请将自定义样式方法定义为:" + typeof(ClipUIAction));
                             Debug.LogError(e);
                             // throw;
                         }
@@ -272,7 +289,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
             ScrollPosHead.y = ScrollPosBody.y;
             // EditorGUI.DrawRect(newTrackBodyRect,
             // new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f)));
-            float height = trackbodyRect.y+1f;
+            float height = trackbodyRect.y + 1f;
             for (var index = 0; index < styleData.Count; index++)
             {
                 var trackData = styleData[index];
@@ -518,7 +535,7 @@ namespace AE_SkillEditor_Plus.Editor.Window
         //Clip右键
         private void ClipRightClick(ClipRightClickEvent click)
         {
-            Debug.Log("Clip右键 " + click.TrackIndex + " " + click.ClipIndex);
+            // Debug.Log("Clip右键 " + click.TrackIndex + " " + click.ClipIndex);
         }
 
         //Clip大小改变

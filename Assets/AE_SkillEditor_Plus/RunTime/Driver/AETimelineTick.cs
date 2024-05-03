@@ -6,10 +6,11 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
 {
     public class AETimelineTick
     {
-        private List<List<AEPlayableBehaviour>> Behaviors;
+        private List<List<AEPlayableBehaviour>> Behaviours;
         private float Timer;
         private int currentFrameID;
         private AETimelineAsset m_asset;
+        private float interval;
 
         public void PlayAsset(AETimelineAsset asset)
         {
@@ -17,28 +18,44 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
             Timer = 0;
             currentFrameID = 0;
             m_asset = asset;
-            Behaviors = new List<List<AEPlayableBehaviour>>();
+            if (asset.FPS == 0)
+            {
+                Debug.LogError("FPS 不能为0");
+                return;
+            }
+
+            interval = 1f / m_asset.FPS;
+            Behaviours = new List<List<AEPlayableBehaviour>>();
             for (var trackIndex = 0; trackIndex < m_asset.Tracks.Count; trackIndex++)
             {
                 var track = m_asset.Tracks[trackIndex];
-                Behaviors.Add(new List<AEPlayableBehaviour>());
+                Behaviours.Add(new List<AEPlayableBehaviour>());
                 for (var clipIndex = 0; clipIndex < track.Clips.Count; clipIndex++)
                 {
                     var clip = track.Clips[clipIndex];
-                    Behaviors[trackIndex].Add((track as IRuntimeBehaviour)?.CreateRuntimeBehaviour(clip));
+                    Behaviours[trackIndex].Add((track as IRuntimeBehaviour)?.CreateRuntimeBehaviour(clip));
                 }
             }
         }
 
-        public void Tick(float delta, int FPS, GameObject context)
+        public void Tick(float delta, GameObject context)
         {
-            if (Behaviors == null) return;
+            if (Behaviours == null) return;
+            if (interval == 0)
+            {
+                return;
+            }
+
             Timer += delta;
-            if (Timer >= 1 / FPS)
+            if (Timer >= interval)
             {
                 currentFrameID += 1;
                 Timer = 0;
-                TickPrivate(FPS, context);
+                TickPrivate(m_asset.FPS, context);
+                // interval = Time.time - interval;
+                // Debug.Log("Tick " + interval);
+                // Debug.Log("FPS " + 1f / FPS);
+                // interval = Time.time;
             }
         }
 
@@ -51,7 +68,7 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
                 for (var clipIndex = 0; clipIndex < track.Clips.Count; clipIndex++)
                 {
                     var clip = track.Clips[clipIndex];
-                    var behavior = Behaviors[trackIndex][clipIndex];
+                    var behavior = Behaviours[trackIndex][clipIndex];
                     if (behavior == null) break;
                     if (currentFrameID >= clip.StartID && currentFrameID < clip.StartID + clip.Duration)
                     {

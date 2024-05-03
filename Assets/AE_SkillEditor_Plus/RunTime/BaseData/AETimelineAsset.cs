@@ -11,6 +11,7 @@ namespace AE_SkillEditor_Plus.RunTime
         // public string Name;
         [SerializeReference] public List<StandardTrack> Tracks;
         public int Duration;
+        public int FPS;
 
         public AETimelineAsset()
         {
