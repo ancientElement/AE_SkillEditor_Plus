@@ -72,7 +72,7 @@ Delete：删除对应Clip
 
 继承自StandardTrack的类，会自动加入创建轨道上下文菜单中。
 
-注意，在编写Clip类的时候，一定要讲Clip类编写为单独文件，且文件名称与类名一致
+注意，在编写Clip类的时候，一定要将Clip类编写为单独文件，且文件名称与类名一致
 
 ![](ImagesAssets/Pasted%20image%2020240503190400.png)
 
@@ -96,17 +96,19 @@ Serializable：用来标记为可序列化的特性
 
 当用户需要自定义Clip的样式的时候可以使用AEClipStyleAttribute特性，这个特性用来描述编写了自定义Clip样式函数的类。
 
-使用时，传入自定义样式函数的类名。例如：AEAnimationTrack在CustomAnimationClip类中编写了自定义Clip函数。于是我们传入了AE_SkillEditor_Plus.Excample.BuiltTracks.CustomAnimationClip作为ClassName。
-
-注意，用户编写的其他自定义Clip样式的函数，一定要是静态函数，并且参数和CustomAnimationClip.UpdateUI一模一样否则会报警告，并且自定义函数不生效。
+其中ClassName一定要写全(Type.fullName)，OverrideUI决定是覆盖原来的UI，还是在原来的UI基础上继续绘制。
 
 ![](ImagesAssets/Pasted%20image%2020240503190945.png)
 
-![](ImagesAssets/Pasted%20image%2020240503191332.png)
-
-其中类名一定要写全，OverrideUI决定是覆盖原来的UI，还是在原来的UI基础上继续绘制。
-
 ![](ImagesAssets/Pasted%20image%2020240503170103.png)
+
+使用时，传入自定义样式函数的类名。例如：AEAnimationTrack在CustomAnimationClip类中编写了自定义Clip样式的函数。于是我们传入了AE_SkillEditor_Plus.Excample.BuiltTracks.CustomAnimationClip作为ClassName。
+
+注意，用户编写的其他自定义Clip样式的函数，一定要是静态函数，并且参数和CustomAnimationClip.UpdateUI一模一样。
+
+否则会报错，且自定义函数不生效。
+
+![](ImagesAssets/Pasted%20image%2020240503191332.png)
 
 自定义的样式类一定要放在Editor下。
 
