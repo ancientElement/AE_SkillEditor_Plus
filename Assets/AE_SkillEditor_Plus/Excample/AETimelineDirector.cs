@@ -3,7 +3,7 @@ using AE_SkillEditor_Plus.RunTime;
 using AE_SkillEditor_Plus.RunTime.Driver;
 using UnityEngine;
 
-namespace AE_SkillEditor_Plus.Excample
+namespace AE_SkillEditor_Plus.Example
 {
     public class AETimelineDirector : MonoBehaviour
     {

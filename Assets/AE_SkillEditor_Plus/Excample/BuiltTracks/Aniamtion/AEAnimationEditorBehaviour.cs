@@ -3,7 +3,7 @@ using AE_SkillEditor_Plus.RunTime;
 using AE_SkillEditor_Plus.RunTime.Driver;
 using UnityEngine;
 
-namespace AE_SkillEditor_Plus.Excample.BuiltTracks
+namespace AE_SkillEditor_Plus.Example.BuiltTracks
 {
     public class AEAnimationEditorBehaviour : AEPlayableBehaviour
     {

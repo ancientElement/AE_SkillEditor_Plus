@@ -1,7 +1,7 @@
 ﻿using AE_SkillEditor_Plus.RunTime;
 using UnityEngine;
 
-namespace AE_SkillEditor_Plus.Excample.BuiltTracks.Audio
+namespace AE_SkillEditor_Plus.Example.BuiltTracks.Audio
 {
     public class AEAudioRuntimeBehaviour : AEAudioEditorBehaviour
     {

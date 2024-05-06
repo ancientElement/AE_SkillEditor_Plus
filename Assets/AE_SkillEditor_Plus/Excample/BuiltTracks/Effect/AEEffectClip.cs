@@ -1,7 +1,7 @@
 ﻿using AE_SkillEditor_Plus.RunTime;
 using UnityEngine;
 
-namespace AE_SkillEditor_Plus.Excample.BuiltTracks.Effect
+namespace AE_SkillEditor_Plus.Example.BuiltTracks.Effect
 {
     public class AEEffectClip : StandardClip
     {

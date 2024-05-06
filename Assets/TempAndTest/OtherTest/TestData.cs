@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
 
-namespace AE_SkillEditor_Plus.Editor
+namespace AE_SkillEditor_Plus
 {
     [TrackColor(0, 0, 1)]
     public class TestTrackData

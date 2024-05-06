@@ -5,7 +5,7 @@ using AE_SkillEditor_Plus.RunTime.Attribute;
 using AE_SkillEditor_Plus.RunTime.Driver;
 using AE_SkillEditor_Plus.RunTime.Interface;
 
-namespace AE_SkillEditor_Plus.Excample.BuiltTracks.Effect
+namespace AE_SkillEditor_Plus.Example.BuiltTracks.Effect
 {
     [AETrackName(Name = "特效")]
     [AETrackColor(127f / 255, 214f / 255, 252f / 255)]

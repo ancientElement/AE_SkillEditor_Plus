@@ -2,7 +2,7 @@
 using AE_SkillEditor_Plus.RunTime;
 using UnityEngine;
 
-namespace AE_SkillEditor_Plus.Excample.BuiltTracks
+namespace AE_SkillEditor_Plus.Example.BuiltTracks
 {
     [Serializable]
     public class AEAnimationClip : StandardClip

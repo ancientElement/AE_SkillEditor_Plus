@@ -3,7 +3,7 @@ using AE_SkillEditor_Plus.RunTime;
 using UnityEditor;
 using UnityEngine;
 
-namespace AE_SkillEditor_Plus.Excample.BuiltTracks
+namespace AE_SkillEditor_Plus.Example.BuiltTracks
 {
     public static class CustomAnimationClip
     {
