@@ -11,7 +11,7 @@ namespace AE_SkillEditor_Plus.Example.BuiltTracks
     [AETrackName(Name = "动画")]
     [AETrackColor(127f / 255, 252f / 255, 228f / 255)]
     [AEBindClip(ClipType = typeof(AEAnimationClip))]
-    [AEClipStyle(ClassName = "AE_SkillEditor_Plus.Excample.BuiltTracks.CustomAnimationClip")]
+    [AEClipStyle(ClassName = "AE_SkillEditor_Plus.Example.BuiltTracks.CustomAnimationClip")]
     [Serializable]
     public class AEAnimationTrack : StandardTrack, IEditorBehaviour, IRuntimeBehaviour
     {
