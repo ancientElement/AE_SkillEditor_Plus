@@ -12,12 +12,12 @@ namespace AE_SkillEditor_Plus.Example.BuiltTracks.Audio
             Clip = clip as AEAudioClip;
         }
 
-        public override void OnEnter(GameObject context, int currentFrameID)
+        public override void OnEnter(GameObject context,int fps, int currentFrameID)
         {
-            base.OnEnter(context, currentFrameID);
+            base.OnEnter(context,fps, currentFrameID);
             if (context == null) return;
             // Debug.Log("VAR");
-            if (currentFrameID == 0 && Clip.AudioClip != null)
+            if (Clip.AudioClip != null)
             {
                 var position = context.transform.TransformPoint(Clip.Position);
                 AudioSource.PlayClipAtPoint(Clip.AudioClip, position);

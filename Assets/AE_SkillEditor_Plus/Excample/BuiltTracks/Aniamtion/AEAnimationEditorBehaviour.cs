@@ -23,9 +23,9 @@ namespace AE_SkillEditor_Plus.Example.BuiltTracks
             context.transform.position += Clip.StartPosition;
         }
 
-        public override void OnExit(GameObject context, int currentFrameID)
+        public override void OnExit(GameObject context,int fps, int currentFrameID)
         {
-            base.OnExit(context, currentFrameID);
+            base.OnExit(context,fps, currentFrameID);
         }
     }
 }

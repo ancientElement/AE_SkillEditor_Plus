@@ -14,9 +14,9 @@ namespace AE_SkillEditor_Plus.Example.BuiltTracks.Audio
             Clip = clip as AEAudioClip;
         }
 
-        public override void OnEnter(GameObject context, int currentFrameID)
+        public override void OnEnter(GameObject context,int fps, int currentFrameID)
         {
-            base.OnEnter(context, currentFrameID);
+            base.OnEnter(context,fps, currentFrameID);
             if (context == null) return;
             // Debug.Log("VAR");
             if (currentFrameID == 0 && Clip.AudioClip != null)
@@ -32,9 +32,9 @@ namespace AE_SkillEditor_Plus.Example.BuiltTracks.Audio
             }
         }
 
-        public override void OnExit(GameObject context, int currentFrameID)
+        public override void OnExit(GameObject context,int fps, int currentFrameID)
         {
-            base.OnExit(context, currentFrameID);
+            base.OnExit(context,fps, currentFrameID);
             if (temp != null) GameObject.DestroyImmediate(temp);
         }
     }
