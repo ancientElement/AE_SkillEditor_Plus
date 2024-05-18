@@ -18,6 +18,24 @@ MonoBehaviour:
   AnimationClip: {fileID: 0}
   FadeIn: 0
   StartPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &-7776446658451119280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca16b65469e642428c03d0c98604f3a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: AEAnimationClip
+  StartID: 0
+  Duration: 9
+  AnimationClip: {fileID: 7400000, guid: 3986e60fa15ced445ad87c71676cb86f, type: 2}
+  FadeIn: 0
+  StartPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31,14 +49,14 @@ MonoBehaviour:
   m_Name: New AETimelineAsset_2
   m_EditorClassIdentifier: 
   Tracks:
-  - rid: 3150064610159362049
-  Duration: 413
-  FPS: 0
+  - rid: 3150064680873754624
+  Duration: 9
+  FPS: 60
   references:
     version: 2
     RefIds:
-    - rid: 3150064610159362049
-      type: {class: AEAnimationTrack, ns: AE_SkillEditor_Plus.Excample.BuiltTracks, asm: Assembly-CSharp}
+    - rid: 3150064680873754624
+      type: {class: AEAnimationTrack, ns: AE_SkillEditor_Plus.Example.BuiltTracks, asm: Assembly-CSharp}
       data:
         Clips:
-        - {fileID: -8582805552044918247}
+        - {fileID: -7776446658451119280}

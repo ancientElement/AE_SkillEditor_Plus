@@ -12,8 +12,10 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
         private AETimelineAsset m_asset;
         private float interval;
 
-        public void PlayAsset(AETimelineAsset asset)
+        public void PlayAsset(AETimelineAsset asset, GameObject context)
         {
+            OnTimelineExit(context);
+
             // Debug.Log("VAR");
             Timer = 0;
             currentFrameID = 0;
@@ -34,6 +36,22 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
                 {
                     var clip = track.Clips[clipIndex];
                     Behaviours[trackIndex].Add((track as IRuntimeBehaviour)?.CreateRuntimeBehaviour(clip));
+                }
+            }
+        }
+
+        private void OnTimelineExit(GameObject context)
+        {
+            if (m_asset == null) return;
+            for (var trackIndex = 0; trackIndex < m_asset.Tracks.Count; trackIndex++)
+            {
+                var track = m_asset.Tracks[trackIndex];
+                for (var clipIndex = 0; clipIndex < track.Clips.Count; clipIndex++)
+                {
+                    var clip = track.Clips[clipIndex];
+                    var behavior = Behaviours[trackIndex][clipIndex];
+                    if (behavior == null) break;
+                    behavior.OnTimelineEnd(context, m_asset.FPS, currentFrameID);
                 }
             }
         }
@@ -75,7 +93,7 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
                         if (behavior.State == AEPlayableStateEnum.Exit)
                         {
                             // Debug.Log(clip.Name + "OnEnter");
-                            behavior.OnEnter(context, currentFrameID);
+                            behavior.OnEnter(context, FPS, currentFrameID);
                         }
 
                         behavior.Tick(currentFrameID - clip.StartID, FPS, context);
@@ -85,7 +103,7 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
                     else if ((currentFrameID < clip.StartID || currentFrameID >= clip.StartID + clip.Duration) &&
                              behavior.State == AEPlayableStateEnum.Running)
                     {
-                        behavior.OnExit(context, currentFrameID);
+                        behavior.OnExit(context, FPS, currentFrameID);
                     }
                 }
             }

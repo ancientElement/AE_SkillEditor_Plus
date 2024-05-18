@@ -1,13 +1,10 @@
+## 警告
+
+在添加轨道或者Clip后切勿修改类名称,否则所有拥有该轨道或者Clip的资产失效!
+
 ## 视频讲解
 
 https://www.bilibili.com/video/BV1LD421s7Dn/?spm_id_from=333.788
-
-讲解：
-1.如何自定义一条轨道
-- 需要加哪些特性（Color、Name、Binding、Serialize，Clip类一定是单独文件，且文件名称与类名一致(因为是ScriptableObject)）
-- 如何定义Clip的AEPlayableBehaviour驱动IEditorBehaviour, IRuntimeBehaviour
-- 如何自定义样式AEClipStyle，其中类名一定要写全，OverrideUI决定是覆盖还是添加
-  2.动画轨道的StartPosition，用复制贴快捷键
 
 ## 创建资产
 
@@ -26,6 +23,7 @@ https://www.bilibili.com/video/BV1LD421s7Dn/?spm_id_from=333.788
 如图中左边ObjectField是AETimelineAssets附加到的对象，右边选择AETimelineAssets资产。
 
 ![](ImagesAssets/Pasted%20image%2020240503172433.png)
+
 ## 编辑
 
 ### 右键
@@ -120,7 +118,8 @@ Serializable：用来标记为可序列化的特性
 
 ![](ImagesAssets/Pasted%20image%2020240503173908.png)
 
-需要Track类继承 IEditorBehaviour, IRuntimeBehaviour，并且分别实现CreateEditorBehaviour和CreateRuntimeBehaviour方法，返回对应AEPlayableBehaviour。
+需要Track类继承 IEditorBehaviour,
+IRuntimeBehaviour，并且分别实现CreateEditorBehaviour和CreateRuntimeBehaviour方法，返回对应AEPlayableBehaviour。
 
 #### AEPlayableBehaviour
 
@@ -134,7 +133,7 @@ AEPlayableBehaviour中有生命周期函数：OnEnter、Tick、OnExit，供用�
 
 例如：在AEAnimationEditorBehaviour中我们在构造函数中拿到了AEAnimationClip，在当前Clip的运行时间内，每一帧都都会调用Tick，我们在Tick中使用SampleAnimation来播放每一帧。
 
-##  Runtime模式
+## Runtime模式
 
 ![](ImagesAssets/Pasted%20image%2020240503173908.png)
 

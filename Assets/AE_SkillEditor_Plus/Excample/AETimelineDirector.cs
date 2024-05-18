@@ -13,7 +13,7 @@ namespace AE_SkillEditor_Plus.Example
         private void Start()
         {
             Tick = new AETimelineTick();
-            Tick.PlayAsset(StartAsset);
+            Tick.PlayAsset(StartAsset,gameObject);
         }
 
         private void Update()

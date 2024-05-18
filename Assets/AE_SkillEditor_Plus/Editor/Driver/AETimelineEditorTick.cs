@@ -46,7 +46,7 @@ namespace AE_SkillEditor_Plus.Editor.Driver
                         if (behavior.State == AEPlayableStateEnum.Exit)
                         {
                             // Debug.Log(clip.Name + "OnEnter");
-                            behavior.OnEnter(context, currentFrameID - clip.StartID);
+                            behavior.OnEnter(context, FPS, currentFrameID - clip.StartID);
                         }
 
                         if (behavior.State == AEPlayableStateEnum.Running)
@@ -57,7 +57,7 @@ namespace AE_SkillEditor_Plus.Editor.Driver
                     else if ((currentFrameID < clip.StartID || currentFrameID >= clip.StartID + clip.Duration) &&
                              behavior.State == AEPlayableStateEnum.Running)
                     {
-                        behavior.OnExit(context, currentFrameID - clip.StartID);
+                        behavior.OnExit(context, FPS, currentFrameID - clip.StartID);
                     }
                 }
             }

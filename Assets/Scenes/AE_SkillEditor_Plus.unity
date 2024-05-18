@@ -1787,4 +1787,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86ff32a2fcdf41bfbd618b4e6a3ceefd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartAsset: {fileID: 11400000, guid: 136f2ae553a1b4443b80a1e03e952c8b, type: 2}
+  StartAsset: {fileID: 11400000, guid: a12cac7f068a43e43a98a33e0cac2482, type: 2}

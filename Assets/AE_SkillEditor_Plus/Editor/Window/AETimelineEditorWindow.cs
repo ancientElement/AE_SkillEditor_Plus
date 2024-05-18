@@ -186,28 +186,31 @@ namespace AE_SkillEditor_Plus.Editor.Window
                 if (classNameAttribute != null)
                 {
                     var className = classNameAttribute.ClassName;
-                    MethodInfo methodInfo = Type.GetType(className)
-                        .GetMethod("UpdateUI", BindingFlags.Static | BindingFlags.Public);
-                    // 将 MethodInfo 转换为委托
-                    if (methodInfo == null)
+                    var type = Type.GetType(className);
+                    if (type != null)
                     {
-                        Debug.LogError("请将自定义样式方法定义为:" + typeof(ClipUIAction));
-                        Debug.LogError("请将自定义样式方法定义为静态函数");
-                    }
-                    else
-                    {
-                        try
-                        {
-                            var action = (ClipUIAction)Delegate.CreateDelegate(typeof(ClipUIAction), methodInfo);
-                            var overrideUI = classNameAttribute.Override;
-                            trackStyle.UpdateUI = action;
-                            trackStyle.OverrideUI = overrideUI;
-                        }
-                        catch (Exception e)
+                        MethodInfo methodInfo = type.GetMethod("UpdateUI", BindingFlags.Static | BindingFlags.Public);
+                        // 将 MethodInfo 转换为委托
+                        if (methodInfo == null)
                         {
                             Debug.LogError("请将自定义样式方法定义为:" + typeof(ClipUIAction));
-                            Debug.LogError(e);
-                            // throw;
+                            Debug.LogError("请将自定义样式方法定义为静态函数");
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var action = (ClipUIAction)Delegate.CreateDelegate(typeof(ClipUIAction), methodInfo);
+                                var overrideUI = classNameAttribute.Override;
+                                trackStyle.UpdateUI = action;
+                                trackStyle.OverrideUI = overrideUI;
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.LogError("请将自定义样式方法定义为:" + typeof(ClipUIAction));
+                                Debug.LogError(e);
+                                // throw;
+                            }
                         }
                     }
                 }

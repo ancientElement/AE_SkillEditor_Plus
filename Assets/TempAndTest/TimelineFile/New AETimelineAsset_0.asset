@@ -195,37 +195,17 @@ MonoBehaviour:
   m_Name: New AETimelineAsset_0
   m_EditorClassIdentifier: 
   Tracks:
-  - rid: 3150064581944803328
-  - rid: 3150064581944803329
-  - rid: 3150064581944803331
-  Duration: 250
+  - rid: 3150064680873754625
+  Duration: 104
   FPS: 30
   references:
     version: 2
     RefIds:
-    - rid: 3150064581944803328
-      type: {class: AEAnimationTrack, ns: AE_SkillEditor_Plus.Excample.BuiltTracks, asm: Assembly-CSharp}
+    - rid: 3150064680873754625
+      type: {class: AEAnimationTrack, ns: AE_SkillEditor_Plus.Example.BuiltTracks, asm: Assembly-CSharp}
       data:
         Clips:
-        - {fileID: 2515666974620938520}
-        - {fileID: -2679183372748696440}
-        - {fileID: -4192674987402613998}
-    - rid: 3150064581944803329
-      type: {class: AEAudioTrack, ns: AE_SkillEditor_Plus.Excample.BuiltTracks.Audio, asm: Assembly-CSharp}
-      data:
-        Clips:
-        - {fileID: -5685658885656549951}
-        - {fileID: -1137470337840709187}
-        - {fileID: -1255883616313345398}
-        - {fileID: -9068611919909846934}
-        - {fileID: -604789218391770944}
-        - {fileID: -433534596582161127}
-        - {fileID: -8761437415972060322}
-    - rid: 3150064581944803331
-      type: {class: AEEffectTrack, ns: AE_SkillEditor_Plus.Excample.BuiltTracks.Effect, asm: Assembly-CSharp}
-      data:
-        Clips:
-        - {fileID: -953898099353263223}
+        - {fileID: 3294529841323764552}
 --- !u!114 &2515666974620938520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,4 +223,22 @@ MonoBehaviour:
   Duration: 31
   AnimationClip: {fileID: 7400000, guid: 3986e60fa15ced445ad87c71676cb86f, type: 2}
   FadeIn: 0.1
+  StartPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &3294529841323764552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca16b65469e642428c03d0c98604f3a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: AEAnimationClip
+  StartID: 0
+  Duration: 100
+  AnimationClip: {fileID: 7400000, guid: 13250cd6fb86cb348a716bc9ee801fb6, type: 2}
+  FadeIn: 0
   StartPosition: {x: 0, y: 0, z: 0}

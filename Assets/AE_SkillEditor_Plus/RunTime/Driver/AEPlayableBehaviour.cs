@@ -11,7 +11,7 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
         {
         }
 
-        public virtual void OnEnter(GameObject context, int currentFrameID)
+        public virtual void OnEnter(GameObject context, int fps, int currentFrameID)
         {
             State = AEPlayableStateEnum.Running;
             // Debug.LogWarning("OnEnter");
@@ -23,10 +23,15 @@ namespace AE_SkillEditor_Plus.RunTime.Driver
             // Debug.Log("OnUpdate  "  + currentFrameID);
         }
 
-        public virtual void OnExit(GameObject context, int currentFrameID)
+        public virtual void OnExit(GameObject context, int fps, int currentFrameID)
         {
             State = AEPlayableStateEnum.Exit;
             // Debug.LogWarning("OnExit");
+        }
+
+        public virtual void OnTimelineEnd(GameObject context, int fps, int currentFrameID)
+        {
+            if (State != AEPlayableStateEnum.Exit) OnExit(context, fps, currentFrameID);
         }
     }
 }
