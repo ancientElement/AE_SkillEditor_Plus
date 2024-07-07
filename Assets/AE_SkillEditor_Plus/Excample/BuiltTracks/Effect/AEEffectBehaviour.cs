@@ -14,9 +14,9 @@ namespace AE_SkillEditor_Plus.Example.BuiltTracks.Effect
             Clip = clip as AEEffectClip;
         }
 
-        public override void OnEnter(GameObject context,int fps, int currentFrameID)
+        public override void OnEnter(GameObject context, int fps, int currentFrameID)
         {
-            base.OnEnter(context,fps, currentFrameID);
+            base.OnEnter(context, fps, currentFrameID);
             if (Clip.Prefab == null) return;
             if (context == null) return;
             var position = context.transform.TransformPoint(Clip.Position);
@@ -48,14 +48,13 @@ namespace AE_SkillEditor_Plus.Example.BuiltTracks.Effect
             {
                 ParticleSystem.MainModule ps = particleSystems[i].main;
                 ps.loop = false; //禁止循环
-                int simulateFrame = currentFrameID - Clip.StartID;
-                particleSystems[i].Simulate((float)simulateFrame / fps, true);
+                particleSystems[i].Simulate((float)currentFrameID / fps, true);
             }
         }
 
-        public override void OnExit(GameObject context,int fps, int currentFrameID)
+        public override void OnExit(GameObject context, int fps, int currentFrameID)
         {
-            base.OnExit(context,fps, currentFrameID);
+            base.OnExit(context, fps, currentFrameID);
 #if UNITY_EDITOR
             if (temp != null) GameObject.DestroyImmediate(temp);
 #else

@@ -196,7 +196,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tracks:
   - rid: 3150064680873754625
-  Duration: 104
+  - rid: 6674932952950112258
+  - rid: 6674932952950112259
+  Duration: 235
   FPS: 30
   references:
     version: 2
@@ -206,6 +208,16 @@ MonoBehaviour:
       data:
         Clips:
         - {fileID: 3294529841323764552}
+    - rid: 6674932952950112258
+      type: {class: AEEffectTrack, ns: AE_SkillEditor_Plus.Example.BuiltTracks.Effect, asm: Assembly-CSharp}
+      data:
+        Clips:
+        - {fileID: 6872966655038232008}
+    - rid: 6674932952950112259
+      type: {class: AEEffectTrack, ns: AE_SkillEditor_Plus.Example.BuiltTracks.Effect, asm: Assembly-CSharp}
+      data:
+        Clips:
+        - {fileID: 3077867296506901088}
 --- !u!114 &2515666974620938520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +236,26 @@ MonoBehaviour:
   AnimationClip: {fileID: 7400000, guid: 3986e60fa15ced445ad87c71676cb86f, type: 2}
   FadeIn: 0.1
   StartPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &3077867296506901088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 654eabb3209d4a9a80f1b85c60859977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: AEEffectClip
+  StartID: 135
+  Duration: 100
+  Prefab: {fileID: 5563071561505943878, guid: 3b028fae81abc944d8d5df631aa0f6a7, type: 3}
+  Position: {x: 0, y: 0, z: 0}
+  Rotarion: {x: 0, y: 0, z: 0}
+  SeedRandom: 0
+  Follow: 1
 --- !u!114 &3294529841323764552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,3 +274,23 @@ MonoBehaviour:
   AnimationClip: {fileID: 7400000, guid: 13250cd6fb86cb348a716bc9ee801fb6, type: 2}
   FadeIn: 0
   StartPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &6872966655038232008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 654eabb3209d4a9a80f1b85c60859977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: AEEffectClip
+  StartID: 131
+  Duration: 100
+  Prefab: {fileID: 5563071561505943878, guid: 3b028fae81abc944d8d5df631aa0f6a7, type: 3}
+  Position: {x: 0, y: 0, z: 2.47}
+  Rotarion: {x: 0, y: 0, z: 0}
+  SeedRandom: 0
+  Follow: 1
